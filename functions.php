@@ -594,3 +594,16 @@ function brezoaele_v2_customize_register( $wp_customize ) {
 	) ) );
 }
 add_action( 'customize_register', 'brezoaele_v2_customize_register' );
+
+/**
+ * -----------------------------------------------------------------------------
+ * QUERY LIMITATION (Limitează paginația arhivei de categorii și blog la 9 articole)
+ * -----------------------------------------------------------------------------
+ */
+function brezoaele_v2_limit_category_posts_per_page( $query ) {
+	if ( ! is_admin() && $query->is_main_query() && ( $query->is_category() || $query->is_home() || $query->is_tag() ) ) {
+		$query->set( 'posts_per_page', 9 );
+	}
+}
+add_action( 'pre_get_posts', 'brezoaele_v2_limit_category_posts_per_page' );
+
