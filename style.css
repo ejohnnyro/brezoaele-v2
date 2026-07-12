@@ -1,0 +1,1469 @@
+/*
+Theme Name: Brezoaele V2
+Theme URI: https://www.brezoaele.ro
+Description: Temă WordPress custom premium construită de la zero.
+Version: 1.0.1
+Author: Antigravity & Ioan
+Author URI: https://www.brezoaele.ro
+Text Domain: brezoaele-v2
+
+==========================================================================
+Table of Contents
+1. Theme Variables & Settings
+2. Base Resets
+3. Typography & Headings
+4. Grid & Layout System
+5. Card Components
+6. Button Elements
+7. Navigation & Header
+8. Footer Components
+9. Custom Post Type Layouts
+10. Flat UI Theme Component Classes
+==========================================================================
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    /* Culori Sistem */
+    --color-primary: #047857;        /* Verde Smarald */
+    --color-primary-dark: #065f46;   /* Verde Închis */
+    --color-primary-light: #f0fdf4;  /* Verde foarte deschis */
+    --color-secondary: #0284c7;      /* Albastru Accent */
+    --color-secondary-dark: #0369a1; /* Albastru Închis */
+    --color-bg: #f8fafc;             /* Fundal foarte deschis */
+    --color-card: #ffffff;           /* Fundal carduri */
+    --color-text-dark: #0f172a;      /* Slate 900 */
+    --color-text-muted: #475569;     /* Slate 600 */
+    --color-border: #e2e8f0;         /* Bordură fină gri */
+    
+    /* Fonturi */
+    --font-heading: 'Inter', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    /* Layout */
+    --container-max-width: 1280px;    
+    --border-radius-sm: 4px;          
+    --border-radius-md: 8px;          /* Rotunjire butoane și inputuri */
+    --border-radius-lg: 16px;         /* Rotunjire carduri și secțiuni */
+    
+    /* Umbre fine premium */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    
+    /* Tranziții */
+    --transition-normal: 0.15s ease-in-out;
+}
+
+/* Reset de bază */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text-dark);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: var(--transition-normal);
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Structură Generală */
+.container {
+    width: 92%;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+}
+
+.container .container {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* Tipografie */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-text-dark);
+    line-height: 1.25;
+    margin-bottom: 0.5em;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+
+/* Grid-uri utile și responsive */
+.grid {
+    display: grid;
+    gap: 24px;
+}
+
+.grid-2, .grid-3 {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Carduri UI */
+.card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-normal);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+}
+
+/* Butoane UI */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    border-radius: var(--border-radius-md);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+}
+
+.btn-block {
+    display: flex;
+    width: 100%;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-secondary-outline {
+    background-color: #ffffff;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+}
+
+.btn-secondary-outline:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+/* Header & Meniu */
+.site-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.site-logo a {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: var(--color-primary-dark);
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+}
+
+/* Navigare Principală cu suport pentru sub-meniuri (Dropdowns) */
+.main-navigation {
+    position: relative;
+}
+
+.main-navigation > ul {
+    display: flex;
+    list-style: none;
+    gap: 28px;
+    align-items: center;
+}
+
+.main-navigation li {
+    position: relative;
+    padding: 10px 0;
+}
+
+.main-navigation a {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    transition: var(--transition-normal);
+    display: block;
+}
+
+.main-navigation a:hover,
+.main-navigation .current-menu-item > a {
+    color: var(--color-primary);
+}
+
+/* Indicator săgeată pentru meniurile care au sub-meniuri */
+.main-navigation .menu-item-has-children > a::after {
+    content: " ▾";
+    font-size: 0.8rem;
+    vertical-align: middle;
+    opacity: 0.7;
+}
+
+/* Stiluri pentru Sub-meniuri (Dropdowns) */
+.main-navigation ul.sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--border-radius-md);
+    min-width: 240px;
+    list-style: none;
+    padding: 10px 0;
+    margin-top: 0; /* Închide spațiul gol care întrerupea hover-ul */
+    z-index: 999;
+}
+
+.main-navigation ul.sub-menu li {
+    padding: 0;
+    width: 100%;
+}
+
+.main-navigation ul.sub-menu a {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-dark);
+}
+
+.main-navigation ul.sub-menu a:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    padding-left: 24px; /* efect subtil de indentare la hover */
+}
+
+/* Nu punem săgeată la sub-meniuri de nivel 2 */
+.main-navigation ul.sub-menu .menu-item-has-children > a::after {
+    content: "";
+}
+
+/* Afișare sub-meniu la hover */
+.main-navigation li:hover > ul.sub-menu,
+.main-navigation li:focus-within > ul.sub-menu {
+    display: block;
+}
+
+/* Ascundere butoane de control meniu mobil pe desktop */
+.menu-toggle {
+    display: none;
+}
+
+.dropdown-toggle-btn {
+    display: none;
+}
+
+/* Footer */
+.site-footer {
+    background-color: var(--color-text-dark);
+    color: #ffffff;
+    padding: 64px 0 32px 0;
+    margin-top: 64px;
+}
+
+.site-footer a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.site-footer a:hover {
+    color: var(--color-primary-light);
+}
+
+.site-footer h3 {
+    color: #ffffff;
+    margin-bottom: 24px;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 48px;
+    padding-top: 24px;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-border);
+}
+
+/* Media Queries suplimentare pentru Header și Meniu Mobil */
+@media (max-width: 1023px) {
+    .header-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        position: relative;
+        width: 100%;
+    }
+    
+    .site-logo {
+        z-index: 1001; /* Asigură că logo-ul rămâne vizibil */
+    }
+    
+    .main-navigation {
+        display: flex;
+        align-items: center;
+        z-index: 1001;
+        position: static; /* Anulează position: relative de pe desktop pentru a permite alinierea meniului pe toată lățimea header-ului */
+    }
+
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        border: 1px solid var(--color-border);
+        color: var(--color-text-dark);
+        width: 42px;
+        height: 42px;
+        border-radius: var(--border-radius-md);
+        cursor: pointer;
+        transition: var(--transition-normal);
+        position: relative;
+        z-index: 1002;
+    }
+    
+    .menu-toggle:hover {
+        background-color: var(--color-primary-light);
+        border-color: var(--color-primary);
+    }
+    
+    /* Stiluri Hamburger (cele 3 linii) */
+    .menu-toggle-icon {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background-color: var(--color-text-dark);
+        position: relative;
+        transition: background-color 0.3s;
+    }
+    
+    .menu-toggle-icon::before,
+    .menu-toggle-icon::after {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 2px;
+        background-color: var(--color-text-dark);
+        position: absolute;
+        left: 0;
+        transition: transform 0.3s, top 0.3s;
+    }
+    
+    .menu-toggle-icon::before {
+        top: -6px;
+    }
+    
+    .menu-toggle-icon::after {
+        top: 6px;
+    }
+    
+    /* Animație hamburger transformat în 'X' la deschidere */
+    .main-navigation.toggled .menu-toggle-icon {
+        background-color: transparent;
+    }
+    
+    .main-navigation.toggled .menu-toggle-icon::before {
+        top: 0;
+        transform: rotate(45deg);
+        background-color: var(--color-danger);
+    }
+    
+    .main-navigation.toggled .menu-toggle-icon::after {
+        top: 0;
+        transform: rotate(-45deg);
+        background-color: var(--color-danger);
+    }
+    
+    .main-navigation.toggled .menu-toggle {
+        border-color: var(--color-danger-light);
+        background-color: #fee2e2;
+    }
+
+    .main-navigation > ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 16px;
+        right: 16px;
+        background-color: #ffffff;
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius-lg);
+        padding: 16px;
+        box-shadow: var(--shadow-lg);
+        gap: 4px;
+        list-style: none;
+        margin-top: 10px;
+    }
+    
+    .main-navigation.toggled > ul {
+        display: flex;
+    }
+    
+    .main-navigation li {
+        width: 100%;
+        padding: 4px 0;
+        position: relative;
+    }
+    
+    .main-navigation a {
+        width: 100%;
+        padding: 8px 12px;
+        border-radius: var(--border-radius-md);
+        font-size: 1rem;
+        display: block;
+    }
+    
+    .main-navigation a:hover {
+        background-color: var(--color-bg);
+    }
+    
+    .main-navigation .menu-item-has-children > a {
+        padding-right: 48px; /* Lasă spațiu pentru butonul din dreapta */
+    }
+
+    .main-navigation .menu-item-has-children > a::after {
+        content: ""; /* Scoatem săgeata implicită pe mobil */
+    }
+
+    /* Sub-meniurile ascunse implicit pe mobil */
+    .main-navigation ul.sub-menu {
+        display: none;
+        position: static;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        background-color: #f8fafc;
+        width: 100%;
+        padding: 6px 12px;
+        margin-top: 4px;
+        border-radius: var(--border-radius-md);
+    }
+    
+    .main-navigation ul.sub-menu.toggled-on {
+        display: block;
+    }
+    
+    .main-navigation ul.sub-menu li {
+        padding: 2px 0;
+    }
+    
+    .main-navigation ul.sub-menu a {
+        font-size: 0.95rem;
+        padding: 6px 12px;
+    }
+    
+    .main-navigation ul.sub-menu a:hover {
+        padding-left: 16px;
+        background-color: var(--color-primary-light);
+    }
+    
+    /* Butonul de expandare sub-meniu pe mobil */
+    .dropdown-toggle-btn {
+        display: flex;
+        position: absolute;
+        right: 8px;
+        top: 6px;
+        background: transparent;
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius-md);
+        color: var(--color-text-dark);
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition-normal);
+        z-index: 10;
+    }
+    
+    .dropdown-toggle-btn.toggled-on {
+        transform: rotate(180deg);
+        background-color: var(--color-primary-light);
+        color: var(--color-primary-dark);
+        border-color: var(--color-primary);
+    }
+}
+
+/* ==========================================================================
+   10. Flat UI Theme Component Classes
+   ========================================================================== */
+
+/* Flat Hero & Layout */
+.flat-hero {
+	background-color: #f8fafc;
+	color: var(--color-text-dark);
+	padding: 35px 0;
+	border-bottom: 2px solid var(--color-border);
+}
+
+.flat-hero-grid {
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	gap: 16px;
+	align-items: stretch;
+}
+
+@media (max-width: 768px) {
+	.flat-hero-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.flat-hero-left {
+	background-color: #ffffff;
+	border: 2px solid var(--color-border);
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-shadow: var(--shadow-sm);
+}
+
+.flat-badge {
+	background-color: var(--color-primary-light);
+	color: var(--color-primary-dark);
+	font-size: 0.75rem;
+	font-weight: 800;
+	padding: 4px 10px;
+	border: 1px solid var(--color-border);
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin-bottom: 12px;
+	align-self: flex-start;
+}
+
+.flat-hero-title {
+	font-size: 2.5rem;
+	font-weight: 900;
+	margin-bottom: 10px;
+	font-family: var(--font-heading);
+	line-height: 1.15;
+	color: var(--color-text-dark);
+}
+
+.flat-hero-subtitle {
+	font-size: 1.05rem;
+	max-width: 650px;
+	margin-bottom: 20px;
+	color: var(--color-text-muted);
+	font-weight: 500;
+	line-height: 1.5;
+}
+
+.flat-hero-buttons {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.flat-hero-right {
+	background-color: #ffffff;
+	border: 2px solid var(--color-border);
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	box-shadow: var(--shadow-sm);
+}
+
+.flat-section-header {
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	border-bottom: 2px solid var(--color-border);
+	padding-bottom: 6px;
+	margin-bottom: 12px;
+	font-weight: 800;
+}
+
+/* Forms Styling */
+.flat-form-card {
+	background-color: #ffffff;
+	border: 1px solid var(--color-border); /* Bordură fină */
+	border-radius: var(--border-radius-lg); /* Colțuri rotunjite */
+	padding: 32px; /* Padding mai aerisit */
+	box-shadow: var(--shadow-md); /* Umbră mai fină și premium */
+	max-width: 700px;
+	margin: 0 auto 40px auto;
+}
+
+.flat-form-title {
+	margin-bottom: 16px;
+	border-bottom: 2px solid var(--color-border);
+	padding-bottom: 8px;
+	font-size: 1.2rem;
+	font-family: var(--font-heading);
+	font-weight: 800;
+}
+
+.flat-form {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.flat-form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.flat-form-label {
+	font-weight: 700;
+	font-size: 0.85rem;
+	color: var(--color-text-dark);
+}
+
+.flat-form-input, 
+.flat-form-select, 
+.flat-form-textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid var(--color-border); /* Bordură fină */
+	font-size: 0.95rem;
+	border-radius: var(--border-radius-md);
+	font-family: inherit;
+	background-color: #ffffff;
+	color: var(--color-text-dark);
+}
+
+.flat-form-textarea {
+	resize: vertical;
+}
+
+.flat-form-file {
+	width: 100%;
+	padding: 8px;
+	border: 1px dashed var(--color-border); /* Bordură fină */
+	border-radius: var(--border-radius-md);
+	font-size: 0.95rem;
+	background-color: #ffffff;
+}
+
+.flat-alert-error {
+	max-width: 700px;
+	margin: 0 auto 20px auto;
+	background-color: #fee2e2;
+	border: 1px solid #ef4444; /* Bordură fină */
+	border-radius: var(--border-radius-md); /* Colțuri rotunjite */
+	color: #b91c1c;
+	padding: 12px 16px;
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+.flat-alert-success {
+	max-width: 700px;
+	margin: 0 auto 20px auto;
+	background-color: #d1fae5;
+	border: 1px solid #10b981; /* Bordură fină */
+	border-radius: var(--border-radius-md); /* Colțuri rotunjite */
+	color: #065f46;
+	padding: 12px 16px;
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+/* Accordions for Ghidul Rezidentului */
+.accordion-group details {
+	background-color: #ffffff;
+	border: 1px solid var(--color-border); /* Bordură fină */
+	border-radius: var(--border-radius-lg);
+	margin-bottom: 16px;
+	box-shadow: var(--shadow-sm);
+	transition: var(--transition-normal);
+}
+
+.accordion-group details[open] {
+	border-color: var(--color-primary-dark);
+	box-shadow: var(--shadow-md);
+}
+
+.accordion-group summary {
+	padding: 16px 20px;
+	font-size: 1.1rem;
+	font-family: var(--font-heading);
+	font-weight: 800;
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: var(--color-text-dark);
+}
+
+.accordion-group summary::-webkit-details-marker {
+	display: none;
+}
+
+.accordion-group summary::after {
+	content: "＋";
+	font-weight: 900;
+	color: var(--color-primary);
+	font-size: 1.1rem;
+}
+
+.accordion-group details[open] summary::after {
+	content: "－";
+	color: var(--color-secondary);
+}
+
+.accordion-content {
+	padding: 0 20px 20px 20px;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: var(--color-text-muted);
+}
+
+.accordion-content h4 {
+	color: var(--color-text-dark);
+	margin: 12px 0 6px 0;
+	font-size: 1rem;
+	font-weight: 800;
+}
+
+.accordion-content ul {
+	margin-left: 20px;
+	margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   11. Homepage Redesign Component Styles
+   ========================================================================== */
+
+/* Flat Hero Layout Redesign */
+.flat-hero-container {
+	position: relative;
+	background-size: auto;
+	background-position: right center; /* Aliniază imaginea în dreapta pentru ca biserica să rămână vizibilă */
+	background-repeat: no-repeat;
+	min-height: 480px;
+	display: flex;
+	align-items: stretch;
+	width: 100%;
+	overflow: hidden;
+}
+
+.hero-curved-overlay-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+	z-index: 1;
+	filter: drop-shadow(15px 0 15px rgba(15, 23, 42, 0.08)); /* Umbra urmează conturul măștii SVG */
+}
+
+.hero-curved-overlay {
+	width: 100%;
+	height: 100%;
+	background-color: #f7f9f6; /* Culoarea de fundal crem deschis */
+	clip-path: url(#hero-clip); /* Taie imaginea în diagonală concavă de la 53% sus la 50% jos */
+	pointer-events: auto;
+}
+
+.hero-container-content {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	min-height: 480px;
+}
+
+.hero-curved-content {
+	width: 50%;
+	max-width: 540px; /* Lățime optimă pentru a nu depăși fundalul alb */
+	padding: 48px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.hero-church-badge {
+	background-color: var(--color-primary-light);
+	color: var(--color-primary-dark);
+	font-size: 0.75rem;
+	font-weight: 800;
+	padding: 4px 10px;
+	border: 1px solid var(--color-border);
+	border-radius: 30px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin-bottom: 16px;
+	display: inline-block;
+	align-self: flex-start;
+}
+
+.hero-church-title {
+	font-size: 2.8rem;
+	font-weight: 900;
+	line-height: 1.1;
+	margin-bottom: 12px;
+	letter-spacing: -0.5px;
+	font-family: var(--font-heading);
+}
+
+.hero-church-title span {
+	color: var(--color-primary);
+}
+
+.hero-church-subtitle {
+	font-size: 1rem;
+	color: var(--color-text-muted);
+	margin-bottom: 24px;
+	line-height: 1.5;
+	font-weight: 500;
+}
+
+.floating-weather-card {
+	position: absolute;
+	bottom: 40px;
+	right: 24px; /* Aliniat la marginea din dreapta a containerului de grilă */
+	background-color: #ffffff;
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-lg);
+	padding: 16px 20px;
+	min-width: 250px;
+	box-shadow: var(--shadow-md);
+	z-index: 2;
+}
+
+.flat-hero-buttons {
+	display: flex;
+	gap: 12px;
+}
+
+@media (max-width: 768px) {
+	.flat-hero-container {
+		min-height: auto;
+		flex-direction: column;
+		background-image: none !important;
+		background-color: #f8fafc;
+		align-items: stretch;
+	}
+	.hero-curved-overlay-wrapper {
+		position: static;
+		filter: none;
+	}
+	.hero-curved-overlay {
+		clip-path: none;
+		background-color: #f7f9f6;
+		width: 100%;
+		padding: 0;
+	}
+	.hero-container-content {
+		flex-direction: column;
+		align-items: stretch;
+		min-height: auto;
+		padding: 0 24px;
+	}
+	.hero-curved-content {
+		width: 100%;
+		max-width: 100%;
+		padding: 32px 0 16px 0;
+	}
+	.floating-weather-card {
+		position: static;
+		margin: 20px 0;
+		width: 100%;
+		box-shadow: var(--shadow-sm);
+	}
+}
+
+/* Feature Utilities Grid */
+.feature-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 16px;
+	margin-top: -30px;
+	position: relative;
+	z-index: 3;
+}
+
+@media (max-width: 768px) {
+	.feature-grid {
+		margin-top: 0;
+		padding: 0 20px;
+	}
+}
+
+.feature-card {
+	background-color: #ffffff;
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-lg);
+	padding: 24px;
+	box-shadow: var(--shadow-sm);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	min-height: 200px;
+	transition: var(--transition-normal);
+}
+
+.feature-card:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-md);
+	border-color: var(--color-primary);
+}
+
+.feature-card-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 12px;
+}
+
+.feature-card-icon {
+	font-size: 1.8rem;
+	line-height: 1;
+}
+
+.feature-card-title {
+	font-size: 1.15rem;
+	font-weight: 800;
+	margin: 0;
+}
+
+.feature-card-text {
+	color: var(--color-text-muted);
+	font-size: 0.85rem;
+	line-height: 1.4;
+	margin-bottom: 16px;
+}
+
+.feature-card-link {
+	font-size: 0.75rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	color: var(--color-primary);
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	letter-spacing: 0.5px;
+	text-decoration: none;
+}
+
+.feature-card-link:hover {
+	color: var(--color-primary-dark);
+	text-decoration: underline;
+}
+
+/* News Section Grid */
+.news-container-grid {
+	display: grid;
+	grid-template-columns: 1.2fr 1fr;
+	gap: 20px;
+	align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+	.news-container-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.news-featured-large {
+	position: relative;
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-lg);
+	height: 100%;
+	min-height: 400px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	box-shadow: var(--shadow-sm);
+	overflow: hidden;
+}
+
+.news-featured-img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	z-index: 1;
+}
+
+.news-featured-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.5) 60%, rgba(15, 23, 42, 0.1) 100%);
+	z-index: 2;
+}
+
+.news-featured-content {
+	position: relative;
+	z-index: 3;
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+	color: #ffffff;
+}
+
+.news-featured-meta {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.news-featured-title {
+	font-size: 1.4rem;
+	font-weight: 900;
+	color: #ffffff;
+	margin-bottom: 8px;
+	line-height: 1.2;
+}
+
+.news-featured-excerpt {
+	font-size: 0.85rem;
+	color: rgba(255, 255, 255, 0.85);
+	margin-bottom: 16px;
+	line-height: 1.4;
+}
+
+.news-featured-link {
+	color: #ffffff;
+	font-size: 0.75rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	text-decoration: underline;
+	align-self: flex-start;
+}
+
+.news-rows-column {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	justify-content: space-between;
+}
+
+.news-row-card {
+	background-color: #ffffff;
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-lg);
+	display: grid;
+	grid-template-columns: 160px 1fr;
+	gap: 16px;
+	box-shadow: var(--shadow-sm);
+	align-items: stretch;
+	overflow: hidden;
+}
+
+@media (max-width: 576px) {
+	.news-row-card {
+		grid-template-columns: 1fr;
+	}
+	.news-row-img-wrapper {
+		height: 160px;
+	}
+}
+
+.news-row-img-wrapper {
+	border-right: 1px solid var(--color-border);
+	overflow: hidden;
+	position: relative;
+}
+
+@media (max-width: 576px) {
+	.news-row-img-wrapper {
+		border-right: none;
+		border-bottom: 1px solid var(--color-border);
+	}
+}
+
+.news-row-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.news-row-body {
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.news-row-meta {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 0.75rem;
+	color: var(--color-text-muted);
+	margin-bottom: 8px;
+	font-weight: 600;
+}
+
+.news-row-title {
+	font-size: 1.05rem;
+	font-weight: 800;
+	margin-bottom: 6px;
+	line-height: 1.25;
+}
+
+.news-row-excerpt {
+	font-size: 0.8rem;
+	color: var(--color-text-muted);
+	line-height: 1.4;
+	margin-bottom: 12px;
+}
+
+.news-row-link {
+	color: var(--color-primary);
+	font-size: 0.75rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.news-row-link:hover {
+	color: var(--color-primary-dark);
+	text-decoration: underline;
+}
+
+/* Neighbors' Ads & Producer CTA */
+.ads-section-grid {
+	display: grid;
+	grid-template-columns: 1.2fr 1fr;
+	gap: 20px;
+	align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+	.ads-section-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.ad-compact-card {
+	background-color: #ffffff;
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-lg);
+	display: grid;
+	grid-template-columns: 150px 1fr;
+	gap: 16px;
+	padding: 12px;
+	box-shadow: var(--shadow-sm);
+	align-items: stretch;
+	overflow: hidden;
+}
+
+@media (max-width: 576px) {
+	.ad-compact-card {
+		grid-template-columns: 1fr;
+	}
+	.ad-compact-img-wrapper {
+		height: 150px;
+	}
+}
+
+.ad-compact-img-wrapper {
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-md);
+	overflow: hidden;
+}
+
+.ad-compact-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.ad-compact-body {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 4px;
+}
+
+.ad-compact-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 6px;
+}
+
+.ad-compact-badge {
+	font-size: 0.7rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	color: var(--color-secondary-dark);
+}
+
+.ad-compact-price {
+	font-size: 1.1rem;
+	font-weight: 900;
+	color: var(--color-primary);
+}
+
+.ad-compact-title {
+	font-size: 1.05rem;
+	font-weight: 800;
+	margin-bottom: 6px;
+	line-height: 1.25;
+}
+
+.ad-compact-excerpt {
+	font-size: 0.8rem;
+	color: var(--color-text-muted);
+	line-height: 1.4;
+	margin-bottom: 12px;
+}
+
+.producer-cta-card {
+	background-color: #f8fafc;
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-lg);
+	padding: 24px;
+	box-shadow: var(--shadow-sm);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: relative;
+	overflow: hidden;
+	height: 100%;
+	min-height: 220px;
+}
+
+.producer-cta-bg-img {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	max-height: 160px;
+	width: auto;
+	z-index: 1;
+	pointer-events: none;
+	opacity: 0.25;
+}
+
+.producer-cta-content {
+	position: relative;
+	z-index: 2;
+	max-width: 75%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+}
+
+@media (max-width: 576px) {
+	.producer-cta-content {
+		max-width: 100%;
+	}
+	.producer-cta-bg-img {
+		opacity: 0.1;
+	}
+}
+
+/* Forum Horizontal Banner */
+.forum-horizontal-banner {
+	display: grid;
+	grid-template-columns: 140px 1fr auto;
+	gap: 24px;
+	align-items: center;
+	background-color: var(--color-primary-light);
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius-lg);
+	padding: 20px 24px;
+	box-shadow: var(--shadow-md);
+}
+
+.forum-banner-img {
+	width: 100%;
+	height: auto;
+	max-height: 120px;
+	object-fit: contain;
+}
+
+.forum-banner-text {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.forum-banner-title {
+	font-size: 1.4rem;
+	font-weight: 900;
+	margin: 0;
+	font-family: var(--font-heading);
+}
+
+.forum-banner-desc {
+	font-size: 0.88rem;
+	color: var(--color-text-muted);
+	line-height: 1.45;
+	margin: 0;
+}
+
+@media (max-width: 768px) {
+	.forum-horizontal-banner {
+		grid-template-columns: 1fr;
+		text-align: center;
+		padding: 24px;
+		gap: 16px;
+	}
+	.forum-banner-img {
+		max-height: 100px;
+		justify-self: center;
+	}
+	.forum-horizontal-banner .btn {
+		width: 100%;
+	}
+}
+
+/* Custom Header & Logo Branding */
+.site-logo a {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	text-decoration: none;
+}
+
+.site-logo img {
+	height: 48px;
+	width: auto;
+	border: none;
+	box-shadow: none;
+}
+
+.site-logo-text {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.15;
+	font-family: var(--font-heading);
+	font-weight: 800;
+	text-align: left;
+}
+
+.site-logo-comuna {
+	color: #334155;
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.site-logo-brezoaele {
+	color: var(--color-primary);
+	font-size: 1.4rem;
+	font-weight: 900;
+	letter-spacing: -0.5px;
+}
+
+/* Footer Background Building Sketch */
+.site-footer {
+	position: relative;
+	overflow: hidden;
+}
+
+.site-footer::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 320px;
+	height: 320px;
+	background-image: url('images/footer-building.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: bottom right;
+	opacity: 0.12; /* subtle line drawing blend on dark background */
+	pointer-events: none;
+	z-index: 1;
+}
+
+/* Make sure footer columns appear on top of background building */
+.site-footer .container {
+	position: relative;
+	z-index: 2;
+}
