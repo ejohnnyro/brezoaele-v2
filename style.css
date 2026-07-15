@@ -1531,3 +1531,53 @@ h3 { font-size: 1.5rem; }
 	cursor: default;
 }
 
+/* Fullscreen Search Overlay & Toggle Button */
+.search-toggle {
+	background: none;
+	border: none;
+	font-size: 1.25rem;
+	cursor: pointer;
+	padding: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.2s ease, color 0.2s ease;
+	color: var(--color-text-dark);
+}
+.search-toggle:hover {
+	color: var(--color-primary);
+	transform: scale(1.1);
+}
+
+@media (max-width: 1023px) {
+	.main-navigation {
+		display: flex !important;
+		align-items: center !important;
+		gap: 10px !important;
+	}
+	.search-toggle {
+		order: 1 !important;
+		border: 1px solid var(--color-border);
+		width: 42px;
+		height: 42px;
+		border-radius: var(--border-radius-md);
+		background-color: var(--color-card);
+	}
+	.menu-toggle {
+		order: 2 !important;
+	}
+}
+
+/* Glassmorphism search input adjustments */
+#fullscreen-search-overlay input::placeholder {
+	color: var(--color-text-muted);
+}
+#fullscreen-search-overlay input:focus {
+	border-color: var(--color-primary) !important;
+	box-shadow: 0 0 0 4px rgba(4, 120, 87, 0.15) !important;
+}
+#search-close-btn:hover {
+	transform: scale(1.1);
+	color: var(--color-primary) !important;
+}
+

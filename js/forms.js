@@ -59,4 +59,47 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
+
+    // 4. Fullscreen Search Overlay Toggle
+    const searchToggleBtn = document.getElementById('search-toggle-btn');
+    const searchOverlay = document.getElementById('fullscreen-search-overlay');
+    const searchCloseBtn = document.getElementById('search-close-btn');
+    const searchInput = searchOverlay ? searchOverlay.querySelector('.search-field') : null;
+
+    if (searchToggleBtn && searchOverlay && searchCloseBtn) {
+        searchToggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            searchOverlay.style.display = 'flex';
+            searchOverlay.offsetHeight; // Force reflow
+            searchOverlay.style.opacity = '1';
+            document.body.style.overflow = 'hidden';
+            if (searchInput) {
+                setTimeout(() => searchInput.focus(), 100);
+            }
+        });
+
+        const closeOverlay = function() {
+            searchOverlay.style.opacity = '0';
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                searchOverlay.style.display = 'none';
+            }, 300);
+        };
+
+        searchCloseBtn.addEventListener('click', closeOverlay);
+
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && searchOverlay.style.display === 'flex') {
+                closeOverlay();
+            }
+        });
+
+        // Close on clicking outside container
+        searchOverlay.addEventListener('click', function(e) {
+            if (e.target === searchOverlay) {
+                closeOverlay();
+            }
+        });
+    }
 });
