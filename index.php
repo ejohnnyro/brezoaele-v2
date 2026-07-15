@@ -34,9 +34,11 @@ get_header();
 					<article class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
 						<div>
 							<?php if ( has_post_thumbnail() ) : ?>
-								<div style="margin-bottom: 12px; border: 1px solid var(--color-border); height: 180px; overflow: hidden;">
-									<?php the_post_thumbnail( 'medium', array( 'style' => 'width:100%; height:100%; object-fit: cover;' ) ); ?>
-								</div>
+								<a href="<?php the_permalink(); ?>" style="display: block; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.95';" onmouseout="this.style.opacity='1';">
+									<div style="margin-bottom: 12px; border: 1px solid var(--color-border); border-radius: var(--border-radius-md); height: 180px; overflow: hidden;">
+										<?php the_post_thumbnail( 'medium', array( 'style' => 'width:100%; height:100%; object-fit: cover;' ) ); ?>
+									</div>
+								</a>
 							<?php endif; ?>
 							
 							<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
