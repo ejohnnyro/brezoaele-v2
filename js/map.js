@@ -41,6 +41,8 @@ document.addEventListener("DOMContentLoaded", function() {
             pinColor = '#047857'; // Verde închis - Producători / Fermieri
         } else if (pin.type === 'institutie' || pin.type === 'scoala' || pin.type === 'utilitate') {
             pinColor = '#0284c7'; // Albastru - Instituții publice
+        } else if (pin.type === 'investitie') {
+            pinColor = '#dc2626'; // Roșu - Proiecte / Investiții
         }
         
         // Popup cu design Flat UI și font Inter

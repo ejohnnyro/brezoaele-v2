@@ -47,9 +47,9 @@ function brezoaele_v2_scripts() {
 		wp_enqueue_style( 'leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', array(), '1.9.4' );
 		wp_enqueue_script( 'leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', array(), '1.9.4', true );
 
-		// Pregătim markerii din baza de date pentru localizare
+		// Pregătim markerii din baza de date pentru localizare (Firme + Investiții)
 		$args = array(
-			'post_type'      => 'firma',
+			'post_type'      => array( 'firma', 'investitie' ),
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
 		);
@@ -68,6 +68,12 @@ function brezoaele_v2_scripts() {
 				$terms = get_the_terms( get_the_ID(), 'tip_afacere' );
 				$type  = ( $terms && ! is_wp_error( $terms ) ) ? $terms[0]->slug : 'generic';
 
+				if ( get_post_type() === 'investitie' ) {
+					$type = 'investitie';
+					$telefon = '';
+					$program = 'Stadiu: ' . get_post_meta( get_the_ID(), '_investitie_stadiu', true );
+				}
+
 				if ( ! empty( $lat ) && ! empty( $lng ) ) {
 					$pins[] = array(
 						'title'   => get_the_title(),
@@ -84,7 +90,7 @@ function brezoaele_v2_scripts() {
 			wp_reset_postdata();
 		}
 
-		wp_enqueue_script( 'brezoaele-map', get_template_directory_uri() . '/js/map.js', array( 'leaflet-js' ), '1.0.2', true );
+		wp_enqueue_script( 'brezoaele-map', get_template_directory_uri() . '/js/map.js', array( 'leaflet-js' ), '1.0.3', true );
 		wp_localize_script( 'brezoaele-map', 'brezoaeleMapData', $pins );
 	}
 
@@ -325,12 +331,12 @@ function brezoaele_v2_add_meta_boxes() {
 		'high'
 	);
 
-	// Metabox Afaceri / Locații Satelit
+	// Metabox Afaceri / Locații Satelit & Investiții
 	add_meta_box(
 		'brezoaele_v2_locatie_details',
 		__( 'Metadate Hartă & Locație', 'brezoaele-v2' ),
 		'brezoaele_v2_locatie_meta_box_callback',
-		'firma',
+		array( 'firma', 'investitie' ),
 		'normal',
 		'high'
 	);

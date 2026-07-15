@@ -13,8 +13,13 @@ get_header();
 		
 		<header class="page-header" style="margin-bottom: 30px; text-align: center;">
 			<h1 class="page-title" style="font-size: 2.5rem; margin-bottom: 8px;">Harta Satelit a Serviciilor</h1>
-			<p style="color: var(--color-text-muted);">Explorează producătorii locali, instituțiile publice și obiectivele de interes din comuna Brezoaele.</p>
-			<div style="width: 50px; height: 3px; background-color: var(--color-primary); margin: 12px auto 0 auto; border-radius: 3px;"></div>
+			<p style="color: var(--color-text-muted); margin-bottom: 16px;">Explorează producătorii locali, instituțiile publice și obiectivele de interes din comuna Brezoaele.</p>
+			<div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 20px;">
+				<a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.85rem; padding: 10px 20px; border-radius: var(--border-radius-md);">
+					➕ Solicită Adăugare Afacere Nouă
+				</a>
+			</div>
+			<div style="width: 50px; height: 3px; background-color: var(--color-primary); margin: 0 auto; border-radius: 3px;"></div>
 		</header>
 
 		<div style="background: #ffffff; padding: 12px 20px; border: 1px solid var(--color-border); border-radius: var(--border-radius-md); margin-bottom: 20px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: var(--shadow-sm);">
@@ -29,6 +34,10 @@ get_header();
 			<div style="display: flex; align-items: center; gap: 8px;">
 				<span style="width: 12px; height: 12px; background-color: #d97706; display: inline-block; border: 1px solid var(--color-border); border-radius: 50%;"></span>
 				<span>Afaceri & Servicii Diverse</span>
+			</div>
+			<div style="display: flex; align-items: center; gap: 8px;">
+				<span style="width: 12px; height: 12px; background-color: #dc2626; display: inline-block; border: 1px solid var(--color-border); border-radius: 50%;"></span>
+				<span>Investiții & Proiecte Locale</span>
 			</div>
 		</div>
 
