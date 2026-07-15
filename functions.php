@@ -186,7 +186,7 @@ function brezoaele_v2_register_firma_cpt() {
 	$args = array(
 		'label'               => __( 'Afacere', 'brezoaele-v2' ),
 		'labels'              => $labels,
-		'supports'            => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+		'supports'            => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
 		'taxonomies'          => array( 'tip_afacere' ),
 		'public'              => true,
 		'show_ui'             => true,
@@ -238,7 +238,7 @@ function brezoaele_v2_register_investitie_cpt() {
 	$args = array(
 		'label'               => __( 'Investiție', 'brezoaele-v2' ),
 		'labels'              => $labels,
-		'supports'            => array( 'title', 'editor', 'thumbnail' ),
+		'supports'            => array( 'title', 'editor', 'thumbnail', 'comments' ),
 		'public'              => true,
 		'show_ui'             => true,
 		'show_in_menu'        => true,
@@ -636,4 +636,45 @@ function brezoaele_v2_limit_category_posts_per_page( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'brezoaele_v2_limit_category_posts_per_page' );
+
+/**
+ * Callback function for custom comments layout and styling.
+ */
+function brezoaele_v2_comment_callback( $comment, $args, $depth ) {
+	$GLOBALS['comment'] = $comment;
+	?>
+	<li <?php comment_class( 'comment-item' ); ?> id="li-comment-<?php comment_ID(); ?>">
+		<div id="comment-<?php comment_ID(); ?>" style="padding: 16px; border: 1px solid var(--color-border); border-radius: var(--border-radius-md); background: #fafafa; margin-bottom: 12px; transition: background-color 0.2s ease;">
+			<div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px;">
+				<div style="border-radius: 50%; overflow: hidden; border: 1px solid var(--color-border); flex-shrink: 0; width: 44px; height: 44px;">
+					<?php echo get_avatar( $comment, $args['avatar_size'] ); ?>
+				</div>
+				<div style="flex-grow: 1;">
+					<div style="font-weight: 800; font-size: 0.95rem; color: var(--color-text-dark);"><?php comment_author_link(); ?></div>
+					<div style="font-size: 0.75rem; color: var(--color-text-muted);">
+						<?php printf( esc_html__( '%1$s la %2$s', 'brezoaele-v2' ), get_comment_date(), get_comment_time() ); ?>
+						<?php edit_comment_link( __( '(Editează)', 'brezoaele-v2' ), '  ', '' ); ?>
+					</div>
+				</div>
+			</div>
+			
+			<div class="comment-content" style="font-size: 0.9rem; line-height: 1.6; color: var(--color-text-dark);">
+				<?php if ( $comment->comment_approved == '0' ) : ?>
+					<p style="font-style: italic; color: #b45309; font-size: 0.85rem; margin-bottom: 6px;">⚠️ Comentariul tău este în curs de moderare.</p>
+				<?php endif; ?>
+				<?php comment_text(); ?>
+			</div>
+			
+			<div class="reply" style="margin-top: 8px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">
+				<?php
+				comment_reply_link( array_merge( $args, array(
+					'reply_text' => __( 'Răspunde &rarr;', 'brezoaele-v2' ),
+					'depth'      => $depth,
+					'max_depth'  => $args['max_depth']
+				) ) );
+				?>
+			</div>
+		</div>
+	<?php
+}
 
