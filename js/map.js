@@ -1,6 +1,6 @@
 /**
  * Map module for Brezoaele V2 Theme.
- * Initializes Leaflet satellite map and renders location markers.
+ * Initializes Leaflet satellite map and renders location markers with instant search capability.
  */
 document.addEventListener("DOMContentLoaded", function() {
     const mapDiv = document.getElementById('map');
@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // Preluăm pinii din obiectul localizat global
     const pinsData = window.brezoaeleMapData || [];
     
+    // Colectăm toți markerii plasați pentru a-i putea filtra mai târziu
+    const mapMarkers = [];
+    
     // Plasare pini pe hartă
     pinsData.forEach(function(pin) {
         let pinColor = '#d97706'; // Galben - Servicii / Firme
@@ -53,16 +56,89 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         `;
         
-        // Desenăm un marker circular modern, ascuțit
-        L.circleMarker([pin.lat, pin.lng], {
+        // Desenăm un marker circular modern
+        const marker = L.circleMarker([pin.lat, pin.lng], {
             radius: 8,
             fillColor: pinColor,
             color: '#0f172a',
             weight: 2,
             opacity: 1,
             fillOpacity: 0.95
-        })
-        .addTo(map)
-        .bindPopup(popupContent);
+        });
+        
+        marker.addTo(map).bindPopup(popupContent);
+        
+        // Salvăm obiectul de marker pentru filtrare
+        mapMarkers.push({
+            marker: marker,
+            title: pin.title.toLowerCase(),
+            type: pin.type.toLowerCase(),
+            excerpt: pin.excerpt.toLowerCase(),
+            telefon: pin.telefon ? pin.telefon.toLowerCase() : ''
+        });
     });
+
+    // Căutare și filtrare în timp real (instant client-side AJAX feel)
+    const searchInput = document.getElementById('business-search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            
+            // 1. Filtrare Carduri
+            const cardItems = document.querySelectorAll('.business-card-item');
+            let visibleCards = 0;
+            
+            cardItems.forEach(function(card) {
+                const title = card.getAttribute('data-title') || '';
+                const type = card.getAttribute('data-type') || '';
+                const excerpt = card.getAttribute('data-excerpt') || '';
+                
+                if (query === '' || title.includes(query) || type.includes(query) || excerpt.includes(query)) {
+                    card.style.display = 'flex';
+                    visibleCards++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Afișăm/ascundem mesajul de lipsă rezultate
+            const noResults = document.getElementById('no-results-message');
+            if (noResults) {
+                if (visibleCards === 0) {
+                    noResults.style.display = 'block';
+                } else {
+                    noResults.style.display = 'none';
+                }
+            }
+            
+            // 2. Filtrare Markeri pe Hartă
+            mapMarkers.forEach(function(item) {
+                const match = query === '' || 
+                              item.title.includes(query) || 
+                              item.type.includes(query) || 
+                              item.excerpt.includes(query) ||
+                              item.telefon.includes(query);
+                              
+                if (match) {
+                    if (!map.hasLayer(item.marker)) {
+                        item.marker.addTo(map);
+                    }
+                } else {
+                    if (map.hasLayer(item.marker)) {
+                        map.removeLayer(item.marker);
+                    }
+                }
+            });
+        });
+        
+        // Focus style transition on search wrapper
+        searchInput.addEventListener('focus', function() {
+            this.style.borderColor = 'var(--color-primary)';
+            this.style.boxShadow = '0 0 0 3px rgba(4, 120, 87, 0.15)';
+        });
+        searchInput.addEventListener('blur', function() {
+            this.style.borderColor = 'var(--color-border)';
+            this.style.boxShadow = 'var(--shadow-sm)';
+        });
+    }
 });

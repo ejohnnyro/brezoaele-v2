@@ -33,7 +33,111 @@ get_header();
 		</div>
 
 		<!-- Containerul Hărții -->
-		<div id="map" style="height: 600px; width: 100%; border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md); z-index: 10; overflow: hidden;"></div>
+		<div id="map" style="height: 600px; width: 100%; border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md); z-index: 10; overflow: hidden; margin-bottom: 30px;"></div>
+
+		<!-- Casetă Căutare Realtime -->
+		<div style="margin-top: 40px; margin-bottom: 30px; display: flex; justify-content: center; width: 100%;">
+			<div style="position: relative; width: 100%; max-width: 500px;">
+				<input type="text" id="business-search-input" placeholder="Caută producători, servicii, instituții..." style="width: 100%; padding: 12px 16px 12px 48px; border: 1px solid var(--color-border); border-radius: var(--border-radius-md); font-size: 1rem; box-shadow: var(--shadow-sm); font-family: var(--font-heading); outline: none; transition: all 0.2s ease;" />
+				<span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; pointer-events: none; opacity: 0.7;">🔍</span>
+			</div>
+		</div>
+
+		<!-- Grid Carduri Afaceri / Servicii -->
+		<div class="grid grid-3" id="business-cards-grid">
+			<?php
+			$args = array(
+				'post_type'      => 'firma',
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			);
+			$query = new WP_Query( $args );
+			
+			if ( $query->have_posts() ) :
+				while ( $query->have_posts() ) :
+					$query->the_post();
+					
+					// Preluăm tipul afacerii din taxonomie
+					$business_types = get_the_terms( get_the_ID(), 'tip_afacere' );
+					$is_producer    = false;
+					$type_label     = 'Afacere';
+					$type_slug      = 'generic';
+					
+					if ( $business_types && ! is_wp_error( $business_types ) ) {
+						$type_label = $business_types[0]->name;
+						$type_slug  = $business_types[0]->slug;
+						if ( in_array( $type_slug, array( 'producator', 'legumicultor' ) ) ) {
+							$is_producer = true;
+						}
+					}
+					
+					// Preluăm metadatele
+					$telefon = get_post_meta( get_the_ID(), '_locatie_telefon', true );
+					$program = get_post_meta( get_the_ID(), '_locatie_program', true );
+			?>
+					<article class="card business-card-item" data-title="<?php echo esc_attr( strtolower( get_the_title() ) ); ?>" data-type="<?php echo esc_attr( strtolower( $type_label ) ); ?> <?php echo esc_attr( $type_slug ); ?>" data-excerpt="<?php echo esc_attr( strtolower( get_the_excerpt() ) ); ?>" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid <?php echo $is_producer ? 'var(--color-primary)' : 'var(--color-border)'; ?>;">
+						<div>
+							<?php if ( has_post_thumbnail() ) : ?>
+								<div class="card-image-wrapper" style="margin-bottom: 12px; border-radius: var(--border-radius-md); overflow: hidden; aspect-ratio: 16/9; border: 1px solid var(--color-border);">
+									<?php the_post_thumbnail( 'medium', array( 'style' => 'width: 100%; height: 100%; object-fit: cover;' ) ); ?>
+								</div>
+							<?php endif; ?>
+
+							<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+								<span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); letter-spacing: 0.5px;">
+									<?php echo esc_html( $type_label ); ?>
+								</span>
+								<?php if ( $is_producer ) : ?>
+									<span style="background-color: var(--color-primary-light); color: var(--color-primary-dark); font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border: 1px solid var(--color-primary-light); border-radius: 30px; text-transform: uppercase;">
+										🚜 Producător
+									</span>
+								<?php endif; ?>
+							</div>
+
+							<h3 style="margin: 6px 0 10px 0; font-size: 1.15rem; line-height: 1.25; font-weight: 800; font-family: var(--font-heading);">
+								<a href="<?php the_permalink(); ?>" style="color: var(--color-text-dark); text-decoration: none;"><?php the_title(); ?></a>
+							</h3>
+							
+							<p style="color: var(--color-text-muted); font-size: 0.85rem; margin-bottom: 16px; line-height: 1.5;">
+								<?php echo wp_trim_words( get_the_excerpt(), 18, '...' ); ?>
+							</p>
+						</div>
+
+						<div style="border-top: 1px solid var(--color-border); padding-top: 12px; margin-top: 8px; font-size: 0.8rem; color: var(--color-text-muted);">
+							<?php if ( ! empty( $program ) ) : ?>
+								<div style="margin-bottom: 4px;">
+									🕒 <b>Program:</b> <?php echo esc_html( $program ); ?>
+								</div>
+							<?php endif; ?>
+							<?php if ( ! empty( $telefon ) ) : ?>
+								<div style="margin-bottom: 10px;">
+									📞 <b>Telefon:</b> <?php echo esc_html( $telefon ); ?>
+								</div>
+							<?php endif; ?>
+							<a href="<?php the_permalink(); ?>" class="btn btn-primary" style="width: 100%;">Vezi Profil Complet</a>
+						</div>
+					</article>
+			<?php
+				endwhile;
+				wp_reset_postdata();
+			else :
+			?>
+				<div style="grid-column: 1 / -1; text-align: center; padding: 40px 0; background-color: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--border-radius-lg);">
+					<div style="font-size: 3rem; margin-bottom: 12px;">🏢</div>
+					<h3>Momentan nu sunt afaceri înregistrate</h3>
+					<p style="color: var(--color-text-muted); font-size: 0.95rem;">Adaugă primele afaceri din panoul de administrare.</p>
+				</div>
+			<?php endif; ?>
+		</div>
+
+		<!-- Mesaj Căutare Fără Rezultate -->
+		<div id="no-results-message" style="display: none; text-align: center; padding: 40px 0; background-color: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); margin-top: 20px;">
+			<div style="font-size: 3rem; margin-bottom: 12px;">🔍</div>
+			<h3 style="font-family: var(--font-heading); font-weight: 800;">Nu s-au găsit rezultate</h3>
+			<p style="color: var(--color-text-muted); font-size: 0.95rem;">Încearcă să cauți alte cuvinte cheie sau verifică scrierea corectă.</p>
+		</div>
 
 	</div>
 </main>
