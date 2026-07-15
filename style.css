@@ -1549,6 +1549,14 @@ h3 { font-size: 1.5rem; }
 	transform: scale(1.1);
 }
 
+@media (min-width: 1024px) {
+	.main-navigation {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+	}
+}
+
 @media (max-width: 1023px) {
 	.main-navigation {
 		display: flex !important;
@@ -1567,6 +1575,7 @@ h3 { font-size: 1.5rem; }
 		order: 2 !important;
 	}
 }
+
 
 /* Glassmorphism search input adjustments */
 #fullscreen-search-overlay input::placeholder {

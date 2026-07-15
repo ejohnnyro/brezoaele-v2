@@ -33,6 +33,9 @@
         </div>
 
         <nav id="site-navigation" class="main-navigation">
+            <button id="search-toggle-btn" class="search-toggle" aria-label="Caută pe site">
+                🔍
+            </button>
             <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false" aria-label="Meniu Navigare">
                 <span class="menu-toggle-icon"></span>
             </button>
@@ -46,9 +49,6 @@
                 )
             );
             ?>
-            <button id="search-toggle-btn" class="search-toggle" aria-label="Caută pe site">
-                🔍
-            </button>
         </nav>
     </div>
 </header>

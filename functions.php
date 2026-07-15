@@ -40,7 +40,7 @@ function brezoaele_v2_scripts() {
 	wp_enqueue_script( 'brezoaele-weather', get_template_directory_uri() . '/js/weather.js', array(), '1.0.1', true );
 
 	// 4. Enqueue Forms UI script
-	wp_enqueue_script( 'brezoaele-forms', get_template_directory_uri() . '/js/forms.js', array(), '1.0.1', true );
+	wp_enqueue_script( 'brezoaele-forms', get_template_directory_uri() . '/js/forms.js', array(), filemtime( get_template_directory() . '/js/forms.js' ), true );
 
 	// 5. Enqueue Leaflet & Harta Satelit doar pe șablonul dedicat
 	if ( is_page_template( 'template-harta-servicii.php' ) ) {
