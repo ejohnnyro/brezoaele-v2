@@ -16,8 +16,8 @@ get_header();
 				<h1 class="page-title" style="font-size: 2.5rem; margin-bottom: 6px; font-weight: 800; font-family: var(--font-heading);">Ghidul Afacerilor & Producătorilor</h1>
 				<p style="color: var(--color-text-muted); font-size: 0.95rem;">Descoperă serviciile locale și cumpără legume proaspete direct de la producătorii din comuna Brezoaele.</p>
 			</div>
-			<a href="<?php echo esc_url( home_url( '/harta-servicii' ) ); ?>" class="btn btn-primary">
-				🗺️ Vezi pe Hartă
+			<a href="<?php echo esc_url( home_url( '/solicita-adaugare-afacere/' ) ); ?>" class="btn btn-primary">
+				➕ Adaugă Afacere Nouă
 			</a>
 		</header>
 

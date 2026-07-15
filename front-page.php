@@ -181,7 +181,7 @@ if ( $ad_query->have_posts() ) {
 	<div class="container">
 		<div class="feature-grid">
 			
-			<!-- Card 1 -->
+			<!-- Card 1: Ghid Rezident -->
 			<div class="feature-card">
 				<div>
 					<div class="feature-card-header">
@@ -189,7 +189,7 @@ if ( $ad_query->have_posts() ) {
 						<h3 class="feature-card-title">Ghid Rezident</h3>
 					</div>
 					<p class="feature-card-text">
-						Utilități, taxe locale, colectare deșeuri și contacte administrative.
+						Utilități, taxe locale, colectare deșeuri și contacte administrative utile din comuna Brezoaele.
 					</p>
 				</div>
 				<a href="<?php echo esc_url( home_url( '/ghid-rezident/' ) ); ?>" class="feature-card-link">
@@ -197,51 +197,51 @@ if ( $ad_query->have_posts() ) {
 				</a>
 			</div>
 
-			<!-- Card 2 -->
-			<div class="feature-card">
-				<div>
-					<div class="feature-card-header">
-						<span class="feature-card-icon" style="color: var(--color-secondary);">💬</span>
-						<h3 class="feature-card-title">Forum Q&A</h3>
-					</div>
-					<p class="feature-card-text">
-						Cere recomandări de meseriași sau discută subiecte locale pe forum.
-					</p>
-				</div>
-				<a href="<?php echo esc_url( home_url( '/comunitate/' ) ); ?>" class="feature-card-link">
-					INTRĂ PE FORUM &rarr;
-				</a>
-			</div>
-
-			<!-- Card 3 -->
+			<!-- Card 2: Anunțuri Locale -->
 			<div class="feature-card">
 				<div>
 					<div class="feature-card-header">
 						<span class="feature-card-icon" style="color: var(--color-secondary);">📢</span>
-						<h3 class="feature-card-title">Adaugă Anunț</h3>
+						<h3 class="feature-card-title">Anunțuri Locale</h3>
 					</div>
 					<p class="feature-card-text">
-						Postează gratuit un anunț local de vânzare, cumpărare sau angajare.
+						Cumpără direct de la producători sau postează gratuit un anunț local de vânzare, cumpărare sau angajare.
 					</p>
 				</div>
-				<a href="<?php echo esc_url( home_url( '/adauga-anunt/' ) ); ?>" class="feature-card-link">
-					PUBLICĂ ANUNȚ &rarr;
+				<a href="<?php echo esc_url( home_url( '/anunturi/' ) ); ?>" class="feature-card-link">
+					VEZI ANUNȚURILE &rarr;
 				</a>
 			</div>
 
-			<!-- Card 4 -->
+			<!-- Card 3: Ghidul Afacerilor & Producătorilor -->
 			<div class="feature-card">
 				<div>
 					<div class="feature-card-header">
 						<span class="feature-card-icon" style="color: var(--color-primary);">🏢</span>
-						<h3 class="feature-card-title">Piața Locală</h3>
+						<h3 class="feature-card-title">Afaceri & Producători</h3>
 					</div>
 					<p class="feature-card-text">
-						Vezi catalogul cu afaceri locale, magazine și producători de legume.
+						Descoperă catalogul magazinelor, firmelor și legumicultorilor din comună pe Harta Satelit.
 					</p>
 				</div>
 				<a href="<?php echo esc_url( home_url( '/afaceri-locale/' ) ); ?>" class="feature-card-link">
 					VEZI DIRECTORUL &rarr;
+				</a>
+			</div>
+
+			<!-- Card 4: Forum Comunitar -->
+			<div class="feature-card">
+				<div>
+					<div class="feature-card-header">
+						<span class="feature-card-icon" style="color: var(--color-secondary);">💬</span>
+						<h3 class="feature-card-title">Forum Comunitar</h3>
+					</div>
+					<p class="feature-card-text">
+						Pune o întrebare, cere recomandări de meseriași sau propune subiecte de discuție pentru localnici.
+					</p>
+				</div>
+				<a href="<?php echo esc_url( home_url( '/comunitate/' ) ); ?>" class="feature-card-link">
+					INTRĂ PE FORUM &rarr;
 				</a>
 			</div>
 
