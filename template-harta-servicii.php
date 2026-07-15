@@ -15,7 +15,7 @@ get_header();
 			<h1 class="page-title" style="font-size: 2.5rem; margin-bottom: 8px;">Harta Satelit a Serviciilor</h1>
 			<p style="color: var(--color-text-muted); margin-bottom: 16px;">Explorează producătorii locali, instituțiile publice și obiectivele de interes din comuna Brezoaele.</p>
 			<div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 20px;">
-				<a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.85rem; padding: 10px 20px; border-radius: var(--border-radius-md);">
+				<a href="<?php echo esc_url( home_url( '/solicita-adaugare-afacere/' ) ); ?>" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.85rem; padding: 10px 20px; border-radius: var(--border-radius-md);">
 					➕ Solicită Adăugare Afacere Nouă
 				</a>
 			</div>
