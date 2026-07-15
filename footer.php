@@ -9,9 +9,12 @@
 		<div>
 			<h3>Utile</h3>
 			<ul>
-				<li><a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contact</a></li>
-				<li><a href="<?php echo esc_url( home_url( '/program-microbuz-brezoaele-bucuresti' ) ); ?>">Mersul Microbuzelor</a></li>
-				<li><a href="<?php echo esc_url( home_url( '/termeni-si-conditii-de-utilizare' ) ); ?>">Termeni și Condiții</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Contact</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/program-microbuz-brezoaele-bucuresti/' ) ); ?>">Mersul Microbuzelor</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/termeni-si-conditii-de-utilizare/' ) ); ?>">Termeni și Condiții</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/politica-de-confidentialitate/' ) ); ?>">Politica de Confidențialitate</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/politica-de-cookies/' ) ); ?>">Politica de Cookies</a></li>
+				<li><a href="#" id="open-cookie-settings-footer">Setări Cookies</a></li>
 			</ul>
 		</div>
 		<div>
