@@ -89,9 +89,11 @@ get_header();
 					<article class="card business-card-item" data-title="<?php echo esc_attr( strtolower( get_the_title() ) ); ?>" data-type="<?php echo esc_attr( strtolower( $type_label ) ); ?> <?php echo esc_attr( $type_slug ); ?>" data-excerpt="<?php echo esc_attr( strtolower( get_the_excerpt() ) ); ?>" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid <?php echo $is_producer ? 'var(--color-primary)' : 'var(--color-border)'; ?>;">
 						<div>
 							<?php if ( has_post_thumbnail() ) : ?>
-								<div class="card-image-wrapper" style="margin-bottom: 12px; border-radius: var(--border-radius-md); overflow: hidden; aspect-ratio: 16/9; border: 1px solid var(--color-border);">
-									<?php the_post_thumbnail( 'medium', array( 'style' => 'width: 100%; height: 100%; object-fit: cover;' ) ); ?>
-								</div>
+								<a href="<?php the_permalink(); ?>" style="display: block; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.95';" onmouseout="this.style.opacity='1';">
+									<div class="card-image-wrapper" style="margin-bottom: 12px; border-radius: var(--border-radius-md); overflow: hidden; aspect-ratio: 16/9; border: 1px solid var(--color-border);">
+										<?php the_post_thumbnail( 'medium', array( 'style' => 'width: 100%; height: 100%; object-fit: cover;' ) ); ?>
+									</div>
+								</a>
 							<?php endif; ?>
 
 							<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
