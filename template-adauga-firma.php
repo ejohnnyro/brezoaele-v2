@@ -18,6 +18,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['submit_firma'] ) ) 
 		$content   = wp_kses_post( $_POST['post_content'] );
 		$telefon   = sanitize_text_field( $_POST['locatie_telefon'] );
 		$program   = sanitize_text_field( $_POST['locatie_program'] );
+		$email     = sanitize_email( $_POST['locatie_email'] );
+		$website   = esc_url_raw( $_POST['locatie_website'] );
+		$persoana  = sanitize_text_field( $_POST['locatie_persoana_contact'] );
 		$lat       = sanitize_text_field( $_POST['locatie_lat'] );
 		$lng       = sanitize_text_field( $_POST['locatie_lng'] );
 		$categorie = intval( $_POST['firma_categorie'] );
@@ -41,6 +44,15 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['submit_firma'] ) ) 
 				// Salvare câmpuri custom meta
 				update_post_meta( $post_id, '_locatie_telefon', $telefon );
 				update_post_meta( $post_id, '_locatie_program', $program );
+				if ( ! empty( $email ) ) {
+					update_post_meta( $post_id, '_locatie_email', $email );
+				}
+				if ( ! empty( $website ) ) {
+					update_post_meta( $post_id, '_locatie_website', $website );
+				}
+				if ( ! empty( $persoana ) ) {
+					update_post_meta( $post_id, '_locatie_persoana_contact', $persoana );
+				}
 				if ( ! empty( $lat ) ) {
 					update_post_meta( $post_id, '_locatie_lat', $lat );
 				}
@@ -136,6 +148,24 @@ get_header();
 					<div class="flat-form-group">
 						<label for="locatie_program" class="flat-form-label">Program de Lucru</label>
 						<input type="text" id="locatie_program" name="locatie_program" class="flat-form-input" placeholder="Ex: Luni - Vineri: 08:00 - 20:00, Sâmbătă: Închis">
+					</div>
+
+					<!-- Email -->
+					<div class="flat-form-group">
+						<label for="locatie_email" class="flat-form-label">Adresă Email</label>
+						<input type="email" id="locatie_email" name="locatie_email" class="flat-form-input" placeholder="Ex: contact@afacerea-ta.ro">
+					</div>
+
+					<!-- Website / Social -->
+					<div class="flat-form-group">
+						<label for="locatie_website" class="flat-form-label">Website / Pagina Socială</label>
+						<input type="url" id="locatie_website" name="locatie_website" class="flat-form-input" placeholder="Ex: https://facebook.com/afacerea-ta">
+					</div>
+
+					<!-- Persoană de contact -->
+					<div class="flat-form-group">
+						<label for="locatie_persoana_contact" class="flat-form-label">Persoană de Contact</label>
+						<input type="text" id="locatie_persoana_contact" name="locatie_persoana_contact" class="flat-form-input" placeholder="Numele persoanei de contact / reprezentantului">
 					</div>
 
 					<!-- Descriere -->

@@ -399,6 +399,9 @@ function brezoaele_v2_locatie_meta_box_callback( $post ) {
 	$lng     = get_post_meta( $post->ID, '_locatie_lng', true );
 	$telefon = get_post_meta( $post->ID, '_locatie_telefon', true );
 	$program = get_post_meta( $post->ID, '_locatie_program', true );
+	$website = get_post_meta( $post->ID, '_locatie_website', true );
+	$email   = get_post_meta( $post->ID, '_locatie_email', true );
+	$persoana = get_post_meta( $post->ID, '_locatie_persoana_contact', true );
 	?>
 	<div style="padding: 10px 0;">
 		<p style="margin-bottom: 12px;">
@@ -416,6 +419,18 @@ function brezoaele_v2_locatie_meta_box_callback( $post ) {
 		<p style="margin-bottom: 12px;">
 			<label for="locatie_program"><strong>Program de Funcționare (ex: Luni-Vineri 08:00-16:00):</strong></label><br>
 			<input type="text" id="locatie_program" name="locatie_program" value="<?php echo esc_attr( $program ); ?>" class="widefat" style="margin-top:5px; padding:6px; border-radius:0; border:1px solid #72777c;">
+		</p>
+		<p style="margin-bottom: 12px;">
+			<label for="locatie_email"><strong>Adresă Email:</strong></label><br>
+			<input type="email" id="locatie_email" name="locatie_email" value="<?php echo esc_attr( $email ); ?>" class="widefat" style="margin-top:5px; padding:6px; border-radius:0; border:1px solid #72777c;">
+		</p>
+		<p style="margin-bottom: 12px;">
+			<label for="locatie_website"><strong>Website / Pagina Socială:</strong></label><br>
+			<input type="url" id="locatie_website" name="locatie_website" value="<?php echo esc_attr( $website ); ?>" class="widefat" style="margin-top:5px; padding:6px; border-radius:0; border:1px solid #72777c;">
+		</p>
+		<p style="margin-bottom: 12px;">
+			<label for="locatie_persoana_contact"><strong>Persoană de Contact:</strong></label><br>
+			<input type="text" id="locatie_persoana_contact" name="locatie_persoana_contact" value="<?php echo esc_attr( $persoana ); ?>" class="widefat" style="margin-top:5px; padding:6px; border-radius:0; border:1px solid #72777c;">
 		</p>
 	</div>
 	<?php
@@ -513,6 +528,15 @@ function brezoaele_v2_save_post_metadata( $post_id ) {
 			}
 			if ( isset( $_POST['locatie_program'] ) ) {
 				update_post_meta( $post_id, '_locatie_program', sanitize_text_field( $_POST['locatie_program'] ) );
+			}
+			if ( isset( $_POST['locatie_website'] ) ) {
+				update_post_meta( $post_id, '_locatie_website', esc_url_raw( $_POST['locatie_website'] ) );
+			}
+			if ( isset( $_POST['locatie_email'] ) ) {
+				update_post_meta( $post_id, '_locatie_email', sanitize_email( $_POST['locatie_email'] ) );
+			}
+			if ( isset( $_POST['locatie_persoana_contact'] ) ) {
+				update_post_meta( $post_id, '_locatie_persoana_contact', sanitize_text_field( $_POST['locatie_persoana_contact'] ) );
 			}
 		}
 	}

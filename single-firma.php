@@ -15,11 +15,13 @@ get_header();
 			the_post();
 			
 			// Preluăm metadatele
-			$telefon = get_post_meta( get_the_ID(), '_locatie_telefon', true );
-			$program = get_post_meta( get_the_ID(), '_locatie_program', true );
-			$website = get_post_meta( get_the_ID(), '_locatie_website', true );
-			$lat     = get_post_meta( get_the_ID(), '_locatie_lat', true );
-			$lng     = get_post_meta( get_the_ID(), '_locatie_lng', true );
+			$telefon  = get_post_meta( get_the_ID(), '_locatie_telefon', true );
+			$program  = get_post_meta( get_the_ID(), '_locatie_program', true );
+			$website  = get_post_meta( get_the_ID(), '_locatie_website', true );
+			$email    = get_post_meta( get_the_ID(), '_locatie_email', true );
+			$persoana = get_post_meta( get_the_ID(), '_locatie_persoana_contact', true );
+			$lat      = get_post_meta( get_the_ID(), '_locatie_lat', true );
+			$lng      = get_post_meta( get_the_ID(), '_locatie_lng', true );
 			
 			$terms      = get_the_terms( get_the_ID(), 'tip_afacere' );
 			$type_label = ( $terms && ! is_wp_error( $terms ) ) ? $terms[0]->name : 'Afacere Locală';
@@ -44,11 +46,11 @@ get_header();
 				<?php endif; ?>
 
 				<!-- Informații Contact & Localizare (Grid 2 coloane) -->
-				<?php if ( ! empty( $program ) || ! empty( $telefon ) || ! empty( $website ) || ( ! empty( $lat ) && ! empty( $lng ) ) ) : ?>
+				<?php if ( ! empty( $program ) || ! empty( $telefon ) || ! empty( $website ) || ! empty( $email ) || ! empty( $persoana ) || ( ! empty( $lat ) && ! empty( $lng ) ) ) : ?>
 					<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; align-items: stretch;">
 						
 						<!-- Caseta Contact -->
-						<?php if ( ! empty( $program ) || ! empty( $telefon ) || ! empty( $website ) ) : ?>
+						<?php if ( ! empty( $program ) || ! empty( $telefon ) || ! empty( $website ) || ! empty( $email ) || ! empty( $persoana ) ) : ?>
 							<div class="card" style="padding: 20px; display: flex; flex-direction: column; justify-content: center;">
 								<h3 style="font-size: 1.1rem; margin-bottom: 16px; border-bottom: 2px solid var(--color-border); padding-bottom: 6px; font-weight: 800; font-family: var(--font-heading);">DATE DE CONTACT</h3>
 								
@@ -77,16 +79,40 @@ get_header();
 										</li>
 									<?php endif; ?>
 
+									<?php if ( ! empty( $email ) ) : ?>
+										<li style="display: flex; align-items: center; gap: 10px;">
+											<span style="font-size: 1.3rem; line-height: 1;">✉️</span>
+											<div>
+												<div style="font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.1;">Adresă Email</div>
+												<div style="font-weight: 700; font-size: 0.95rem;">
+													<a href="mailto:<?php echo esc_attr( $email ); ?>" style="color: var(--color-primary-dark); text-decoration: underline;">
+														<?php echo esc_html( $email ); ?>
+													</a>
+												</div>
+											</div>
+										</li>
+									<?php endif; ?>
+
 									<?php if ( ! empty( $website ) ) : ?>
 										<li style="display: flex; align-items: center; gap: 10px;">
 											<span style="font-size: 1.3rem; line-height: 1;">🌐</span>
 											<div>
-												<div style="font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.1;">Website / Social</div>
+												<div style="font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.1;">Website / Pagina Socială</div>
 												<div style="font-weight: 700; font-size: 0.95rem;">
 													<a href="<?php echo esc_url( $website ); ?>" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary-dark); text-decoration: underline;">
 														Vizitează Pagina &rarr;
 													</a>
 												</div>
+											</div>
+										</li>
+									<?php endif; ?>
+
+									<?php if ( ! empty( $persoana ) ) : ?>
+										<li style="display: flex; align-items: center; gap: 10px;">
+											<span style="font-size: 1.3rem; line-height: 1;">👤</span>
+											<div>
+												<div style="font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.1;">Persoană de contact</div>
+												<div style="font-weight: 700; font-size: 0.95rem; color: var(--color-text-dark);"><?php echo esc_html( $persoana ); ?></div>
 											</div>
 										</li>
 									<?php endif; ?>
