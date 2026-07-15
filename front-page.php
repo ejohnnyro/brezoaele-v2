@@ -205,7 +205,7 @@ if ( $ad_query->have_posts() ) {
 						<h3 class="feature-card-title">Anunțuri Locale</h3>
 					</div>
 					<p class="feature-card-text">
-						Cumpără direct de la producători sau postează gratuit un anunț local de vânzare, cumpărare sau angajare.
+						Cumpără direct de la producători sau adaugă un anunț local de vânzare, cumpărare sau angajare.
 					</p>
 				</div>
 				<a href="<?php echo esc_url( home_url( '/anunturi/' ) ); ?>" class="feature-card-link">
@@ -453,8 +453,8 @@ if ( $ad_query->have_posts() ) {
 						</p>
 					</div>
 					
-					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn-primary" style="align-self: flex-start; margin-top: 12px;">
-						👤 Înscrie-te Gratuit
+					<a href="<?php echo esc_url( home_url( '/adauga-anunt/' ) ); ?>" class="btn btn-primary" style="align-self: flex-start; margin-top: 12px;">
+						👤 Adaugă Anunț
 					</a>
 				</div>
 			</div>
