@@ -131,6 +131,13 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
         
+        // Prevent enter key default behaviors (such as submitting forms or reloading)
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
+
         // Focus style transition on search wrapper
         searchInput.addEventListener('focus', function() {
             this.style.borderColor = 'var(--color-primary)';
