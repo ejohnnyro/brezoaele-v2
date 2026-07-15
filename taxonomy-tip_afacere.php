@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying archive pages for firms (afaceri-locale).
+ * The template for displaying archive pages for a specific business type (tip_afacere taxonomy).
  *
  * @package Brezoaele_V2
  */
@@ -13,8 +13,8 @@ get_header();
 		
 		<header class="page-header" style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
 			<div>
-				<h1 class="page-title" style="font-size: 2.5rem; margin-bottom: 6px; font-weight: 800; font-family: var(--font-heading);">Ghidul Afacerilor & Producătorilor</h1>
-				<p style="color: var(--color-text-muted); font-size: 0.95rem;">Descoperă serviciile locale și cumpără legume proaspete direct de la producătorii din comuna Brezoaele.</p>
+				<h1 class="page-title" style="font-size: 2.5rem; margin-bottom: 6px; font-weight: 800; font-family: var(--font-heading);"><?php single_term_title(); ?></h1>
+				<p style="color: var(--color-text-muted); font-size: 0.95rem;">Afaceri locale, producători și servicii din categoria „<?php single_term_title(); ?>” în comuna Brezoaele.</p>
 			</div>
 			<a href="<?php echo esc_url( home_url( '/harta-servicii' ) ); ?>" class="btn btn-primary">
 				🗺️ Vezi pe Hartă
@@ -119,7 +119,7 @@ get_header();
 			?>
 				<div style="grid-column: 1 / -1; text-align: center; padding: 40px 0; background-color: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--border-radius-lg);">
 					<div style="font-size: 3rem; margin-bottom: 12px;">🏢</div>
-					<h3>Momentan nu sunt afaceri înregistrate</h3>
+					<h3>Momentan nu sunt afaceri înregistrate în această categorie</h3>
 					<p style="color: var(--color-text-muted); font-size: 0.95rem;">Adaugă primele afaceri din panoul de administrare.</p>
 				</div>
 			<?php endif; ?>
