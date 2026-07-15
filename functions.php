@@ -94,8 +94,8 @@ function brezoaele_v2_scripts() {
 		wp_localize_script( 'brezoaele-map', 'brezoaeleMapData', $pins );
 	}
 
-	// 6. Enqueue Leaflet & Harta Satelit pe pagina individuală de Afacere (single-firma.php)
-	if ( is_singular( 'firma' ) ) {
+	// 6. Enqueue Leaflet & Harta Satelit pe pagina individuală de Afacere sau Investiție (single-firma.php, single-investitie.php)
+	if ( is_singular( array( 'firma', 'investitie' ) ) ) {
 		$lat = get_post_meta( get_the_ID(), '_locatie_lat', true );
 		$lng = get_post_meta( get_the_ID(), '_locatie_lng', true );
 
