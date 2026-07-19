@@ -5,23 +5,117 @@
  * @package Brezoaele_V2
  */
 
-// Hook temporar pentru recuperarea reviziilor anterioare (se rulează prin ?chk=2)
+// Hook temporar pentru actualizarea detaliată a articolului (se rulează prin ?chk=3)
 add_action( 'init', function() {
-	if ( isset( $_GET['chk'] ) && $_GET['chk'] === '2' ) {
-		$revisions = wp_get_post_revisions( 2024 );
-		$output = "";
-		if ( ! empty( $revisions ) ) {
-			foreach ( $revisions as $rev ) {
-				$output .= "=== REVISION ID: " . $rev->ID . " (Date: " . $rev->post_date . ") ===\n";
-				$output .= "TITLE: " . $rev->post_title . "\n";
-				$output .= "CONTENT:\n" . $rev->post_content . "\n\n";
-			}
-		} else {
-			$output = "No revisions found!";
-		}
-		file_put_contents( get_theme_file_path( 'revisions_dump.txt' ), $output );
-		echo "DUMP_CREATED";
-		exit;
+	if ( isset( $_GET['chk'] ) && $_GET['chk'] === '3' ) {
+		$post_id = 2024;
+		global $wpdb;
+		$wpdb->update(
+			$wpdb->posts,
+			array(
+				'post_title'   => 'Proiectul de Construire a Noii Școli Gimnaziale din Brezoaele',
+				'post_content' => '<p style="text-align: justify;">Unul dintre cele mai ambițioase proiecte de infrastructură din istoria comunei Brezoaele se află în plină desfășurare. Este vorba despre <strong>construirea unei școli moderne</strong>, care va înlocui actuala unitate de învățământ din satul Brezoaia, aducând un salt calitativ major în educația copiilor din comună.</p>
+
+<h3>Istoricul Proiectului</h3>
+<p style="text-align: justify;">Proiectul a fost inițiat prin <strong>Hotărârea nr. 33 din 21.08.2024</strong>, care prevedea „Modernizarea și extinderea Școlii Gimnaziale Brezoaia”. Ulterior, prin <strong>Hotărârea nr. 42 din 26.09.2024</strong>, Consiliul Local a aprobat modificarea titulaturii proiectului în <strong>„Demolare corpuri de construcții existente și construire clădire nouă, Școala Gimnazială Brezoaia – sat Brezoaia, comuna Brezoaele, județul Dâmbovița”</strong>, reflectând schimbarea de perspectivă de la o simplă modernizare la o reconstrucție completă.</p>
+<p style="text-align: justify;">În aceeași hotărâre, s-a aprobat reactualizarea <strong>Notei Conceptuale</strong> și a <strong>Temei de proiectare</strong>, în funcție de noile cerințe tehnice și urbanistice, pentru a se încadra în <a href="https://2021-2027.adrmuntenia.ro/" target="_blank" rel="noopener">Ghidul solicitantului pentru Programul Operațional Regional – Prioritatea 5 „O regiune educată”</a>.</p>
+
+<h3>Semnarea Contractului de Finanțare</h3>
+<p style="text-align: justify;">Un moment istoric pentru comunitate a avut loc în <strong>luna mai 2026</strong>, când primarul Ion Florea a anunțat, printr-o <a href="https://www.facebook.com/primariacomuneibrezoaele/posts/pfbid028awCv3qsWZgzw9A7vjU9WRq6FYvp22GzSYJHPd3QMB1zJdECQViRafRY7RxwxuMjl" target="_blank" rel="noopener">postare emoționantă pe pagina oficială de Facebook</a>, semnarea contractului de finanțare pentru construirea noii școli. Primarul a subliniat că aceasta este <strong>cea mai mare investiție realizată până acum în comuna Brezoaele</strong> și că proiectul <strong>nu aparține doar Primăriei sau Școlii, ci întregii comunități</strong>.</p>
+<p style="text-align: justify;">În mesajul său, edilul a evidențiat că, în ultimii patru ani, comuna a demonstrat că poate realiza lucruri importante, iar această școală este dovada că <strong>„fiecare copil din Brezoaele merită condiții moderne, sigure și demne de vremurile în care trăim”</strong>.</p>
+
+<h3>Prezentarea Generală a Proiectului</h3>
+<p style="text-align: justify;">Proiectul, intitulat <strong>„Demolare corpuri de construcții existente, construire clădire nouă Școala Gimnazială Brezoaia-Brezoaele, județul Dâmbovița”</strong>, este coordonat de <a href="https://www.primariabrezoaele.ro" target="_blank" rel="noopener">Primăria Comunei Brezoaele</a>. Investiția vizează <strong>îmbunătățirea calității infrastructurii școlare</strong>, combaterea sărăciei și a excluziunii sociale, precum și reducerea abandonului școlar și a diferențelor dintre mediul urban și rural în domeniul educațional.</p>
+<p style="text-align: justify;">În luna octombrie 2024, <a href="https://www.gazetamunteniei.ro/91798-2/" target="_blank" rel="noopener">proiectul a intrat în linie dreaptă</a>, după ce s-au parcurs etapele premergătoare semnării contractului de finanțare de la finalul anului 2024.</p>
+<p style="text-align: justify;"><strong>Obiectivul general al proiectului:</strong> Îmbunătățirea calității infrastructurii Școlii Gimnaziale Brezoaia-Brezoaele, combaterea sărăciei și a excluziunii sociale din comunitatea Brezoaele, județul Dâmbovița, prin implementarea de acțiuni care să înlăture situația de nesiguranță și abandon școlar, contribuind la reducerea diferențelor urban-rural în domeniul educațional. Infrastructura educațională este un element esențial al procesului educațional, având un efect direct asupra rezultatelor elevilor, inclusiv participarea, retenția, motivația și performanțele acestora. Pentru asigurarea unui acces echitabil la medii de învățare sigure, solicitantul <strong>UAT Comuna Brezoaele</strong> dorește să asigure spații fizice protejate, sigure și moderne care să faciliteze predarea și învățarea la standarde europene.</p>
+
+<h3>Detaliile Tehnice ale Noii Școli</h3>
+<p style="text-align: justify;">Noua școală va fi construită pe amplasamentul actualei unități de învățământ, situată pe <strong>Strada Principală, nr. 756, în satul Brezoaia</strong>. Aceasta va avea o <strong>suprafață desfășurată construită de 2.790 mp</strong> și o <strong>suprafață construită de 1.115 mp</strong>, conform <a href="https://sicap.pro/anunturi/SCN1176213" target="_blank" rel="noopener">anunțului de licitație publicat pe platforma SICAP</a>.</p>
+<p style="text-align: justify;">Conform informațiilor furnizate de Primărie, noua unitate de învățământ va fi o clădire <strong>modernă, cu o arhitectură de ultimă generație, distribuită pe trei niveluri</strong>, cu o <strong>suprafață totală de peste 2.200 m²</strong>. Proiectul include:</p>
+<ul>
+ 	<li style="text-align: justify;"><strong>Săli de clasă spațioase</strong>, care să ofere condiții optime de învățare;</li>
+ 	<li style="text-align: justify;"><strong>Laboratoare moderne</strong> pentru disciplinele științifice;</li>
+ 	<li style="text-align: justify;"><strong>Bibliotecă</strong>, pentru stimularea lecturii și a cercetării;</li>
+ 	<li style="text-align: justify;"><strong>Sală multifuncțională</strong>, destinată atât sportului, cât și festivităților și evenimentelor școlare;</li>
+ 	<li style="text-align: justify;"><strong>Terasă pietonală de peste 1.000 m²</strong>, amenajată la etajul I.</li>
+</ul>
+<p style="text-align: justify;">Clădirea va beneficia de <strong>sisteme eficiente de încălzire și răcire cu pompă de căldură</strong>, precum și de un <strong>sistem profesional de ventilație cu recuperare de căldură</strong>, asigurând un climat interior sănătos și confortabil pe tot parcursul anului.</p>
+<p style="text-align: justify;">Conform anunțului de licitație publicat pe platforma SICAP, valoarea estimată a lucrărilor de construcție este de <strong>22.290.371,31 lei (fără TVA)</strong>, structurată astfel:</p>
+<ul>
+ 	<li style="text-align: justify;"><strong>Construcții și instalații</strong> – 17.993.572,97 lei</li>
+ 	<li style="text-align: justify;"><strong>Amenajarea terenului</strong> – 745.976,13 lei</li>
+ 	<li style="text-align: justify;"><strong>Protecția mediului</strong> – 1.670.169,19 lei</li>
+ 	<li style="text-align: justify;"><strong>Utilități</strong> – 581.172,30 lei</li>
+ 	<li style="text-align: justify;"><strong>Utilaje și echipamente</strong> – 1.245.500 lei</li>
+</ul>
+
+<h3>Date Financiare și Structura Bugetului (MFE)</h3>
+<p style="text-align: justify;">Proiectul este finanțat prin Programul Regional Sud-Muntenia (Prioritatea P5. O regiune educată), prin intermediul Fondului European de Dezvoltare Regională (FEDR) și al bugetului de stat. Structura financiară, conform setului de date oficial MFE, este detaliată în continuare:</p>
+<table style="width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px;">
+	<thead>
+		<tr style="background-color: #f1f5f9;">
+			<th style="border: 1px solid var(--color-border); padding: 10px; text-align: left; font-family: var(--font-heading);">Indicator bugetar</th>
+			<th style="border: 1px solid var(--color-border); padding: 10px; text-align: right; font-family: var(--font-heading);">Valoare (RON)</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td style="border: 1px solid var(--color-border); padding: 10px;"><strong>Valoare Totală Proiect</strong></td>
+			<td style="border: 1px solid var(--color-border); padding: 10px; text-align: right; font-weight: bold;">39.219.289,27 RON</td>
+		</tr>
+		<tr>
+			<td style="border: 1px solid var(--color-border); padding: 10px;"><strong>Buget Total Eligibil</strong></td>
+			<td style="border: 1px solid var(--color-border); padding: 10px; text-align: right; font-weight: bold;">20.200.363,45 RON</td>
+		</tr>
+		<tr>
+			<td style="border: 1px solid var(--color-border); padding: 10px; padding-left: 25px;">— Fondul European de Dezvoltare Regională (FEDR)</td>
+			<td style="border: 1px solid var(--color-border); padding: 10px; text-align: right; color: var(--color-text-muted);">9.692.134,39 RON</td>
+		</tr>
+		<tr>
+			<td style="border: 1px solid var(--color-border); padding: 10px; padding-left: 25px;">— Bugetul de Stat al României</td>
+			<td style="border: 1px solid var(--color-border); padding: 10px; text-align: right; color: var(--color-text-muted);">10.104.221,80 RON</td>
+		</tr>
+		<tr>
+			<td style="border: 1px solid var(--color-border); padding: 10px; padding-left: 25px;">— Cofinanțare locală (UAT Comuna Brezoaele)</td>
+			<td style="border: 1px solid var(--color-border); padding: 10px; text-align: right; color: var(--color-text-muted);">404.007,27 RON</td>
+		</tr>
+		<tr>
+			<td style="border: 1px solid var(--color-border); padding: 10px;"><strong>Buget Neeligibil Total</strong></td>
+			<td style="border: 1px solid var(--color-border); padding: 10px; text-align: right;">19.018.925,82 RON</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Detalii Administrative</h3>
+<ul style="line-height: 1.6;">
+	<li><strong>Cod SMIS Proiect:</strong> 338324</li>
+	<li><strong>Autoritate Responsabilă:</strong> Agenția pentru Dezvoltare Regională Sud-Muntenia (ADRSM)</li>
+	<li><strong>Beneficiar / Lider Proiect:</strong> UAT COMUNA BREZOAELE</li>
+	<li><strong>Tipul Apelului:</strong> Competitiv cu termen-limită de depunere (PRSM/310/PRSM_P5/OP4/RSO4.2/PRSM_A23)</li>
+	<li><strong>Data de Începere:</strong> 01.08.2024</li>
+	<li><strong>Data de Finalizare estimată:</strong> 28.02.2029</li>
+	<li><strong>Status Curent:</strong> În derulare</li>
+</ul>
+
+<h3>Beneficiile pentru Comunitate</h3>
+<p style="text-align: justify;">Construirea noii școli va avea un impact profund asupra întregii comunități:</p>
+<ul>
+ 	<li style="text-align: justify;"><strong>Condiții moderne de învățare</strong> – elevii vor beneficia de un mediu educațional la standarde europene, cu dotări de ultimă generație.</li>
+ 	<li style="text-align: justify;"><strong>Siguranță și confort</strong> – clădirea va fi construită respectând cele mai înalte standarde de siguranță și eficientă energetică.</li>
+ 	<li style="text-align: justify;"><strong>Reducerea abandonului școlar</strong> – prin crearea unui mediu atractiv pentru elevi, școala va deveni un loc în care copiii vor dori să vină.</li>
+ 	<li style="text-align: justify;"><strong>Creșterea atractivității comunei</strong> – o școală modernă este un factor esențial pentru tinerele familii care aleg să se stabilească în Brezoaele.</li>
+ 	<li style="text-align: justify;"><strong>Un proiect al întregii comunități</strong> – așa cum a subliniat primarul într-o <a href="https://www.facebook.com/primariacomuneibrezoaele/posts/pfbid028awCv3qsWZgzw9A7vjU9WRq6FYvp22GzSYJHPd3QMB1zJdECQViRafRY7RxwxuMjl" target="_blank" rel="noopener">postare pe pagina oficială de Facebook</a>, această investiție <strong>nu aparține doar Primăriei sau Școlii, ci întregii comunități</strong>.</li>
+</ul>
+
+<h3>Perspective</h3>
+<p style="text-align: justify;">Noua școală gimnazială va deservi actualii <strong>365 de elevi</strong> ai Școlii Gimnaziale Brezoaia-Brezoaele, dar și generațiile viitoare, oferindu-le <strong>șansa de a învăța acasă, în condiții pe care părinții lor nu le-au avut niciodată</strong>. Această investiție reconfirmă angajamentul autorităților locale de a transforma Brezoaele într-o comună modernă, pregătită pentru provocările viitorului.</p>
+<p style="text-align: justify;">Proiectul se alătură altor investiții majore din comună, precum <a href="https://brezoaele.ro/investitii/proiectul-de-infiintare-a-retelei-de-distributie-a-gazelor-naturale-in-comuna-brezoaele/" target="_blank" rel="noopener">înființarea rețelei de gaze naturale</a>, modernizarea infrastructurii rutiere sau instalarea de panouri fotovoltaice pe clădirile publice, toate contribuind la dezvoltarea durabilă a localității.</p>',
+			),
+			array( 'ID' => $post_id )
+		);
+		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_value = 'În derulare' WHERE post_id = 2024 AND meta_key = '_investitie_stadiu'" );
+		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_value = '39.219.289,27 RON' WHERE post_id = 2024 AND meta_key = '_investitie_buget'" );
+		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_value = 'Programul Regional Sud Muntenia (FEDR / Buget de Stat)' WHERE post_id = 2024 AND meta_key = '_investitie_sursa'" );
 	}
 });
 
