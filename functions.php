@@ -67,7 +67,15 @@ add_action( 'init', function() {
 	<li><strong>Status Curent:</strong> În derulare</li>
 </ul>'
 		);
-		wp_update_post( $post_data );
+		global $wpdb;
+		$wpdb->update(
+			$wpdb->posts,
+			array(
+				'post_title'   => $post_data['post_title'],
+				'post_content' => $post_data['post_content'],
+			),
+			array( 'ID' => $post_id )
+		);
 		update_post_meta( $post_id, '_investitie_stadiu', 'În derulare' );
 		update_post_meta( $post_id, '_investitie_buget', '39.219.289,27 RON' );
 		update_post_meta( $post_id, '_investitie_sursa', 'Programul Regional Sud Muntenia (FEDR / Buget de Stat)' );
