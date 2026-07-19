@@ -1698,6 +1698,7 @@ input:checked + .cookie-switch-label::before {
 	grid-template-columns: repeat(7, 1fr) !important;
 	gap: 12px !important;
 	margin-top: 20px;
+	width: 100% !important;
 }
 
 .forecast-container .card {
@@ -1706,9 +1707,10 @@ input:checked + .cookie-switch-label::before {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	min-width: 0; /* Previne overflow-ul de grid track */
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1250px) {
 	.forecast-container {
 		display: flex !important;
 		overflow-x: auto !important;
@@ -1717,10 +1719,10 @@ input:checked + .cookie-switch-label::before {
 		gap: 16px !important;
 		padding-bottom: 15px !important;
 		padding-top: 5px !important;
-		margin-left: -15px !important;
-		margin-right: -15px !important;
-		padding-left: 15px !important;
-		padding-right: 15px !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
 	}
 	
 	.forecast-container::-webkit-scrollbar {
@@ -1743,6 +1745,7 @@ input:checked + .cookie-switch-label::before {
 		box-shadow: var(--shadow-md) !important;
 	}
 }
+
 
 
 
