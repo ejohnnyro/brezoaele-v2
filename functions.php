@@ -45,7 +45,11 @@ function brezoaele_v2_scripts() {
 	// 5. Enqueue Leaflet & Harta Satelit doar pe șablonul dedicat
 	if ( is_page_template( 'template-harta-servicii.php' ) ) {
 		wp_enqueue_style( 'leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', array(), '1.9.4' );
+		wp_enqueue_style( 'leaflet-cluster-css', 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css', array(), '1.4.1' );
+		wp_enqueue_style( 'leaflet-cluster-default-css', 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css', array(), '1.4.1' );
+
 		wp_enqueue_script( 'leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', array(), '1.9.4', true );
+		wp_enqueue_script( 'leaflet-cluster-js', 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js', array( 'leaflet-js' ), '1.4.1', true );
 
 		// Pregătim markerii din baza de date pentru localizare (Firme + Investiții)
 		$args = array(
@@ -90,7 +94,7 @@ function brezoaele_v2_scripts() {
 			wp_reset_postdata();
 		}
 
-		wp_enqueue_script( 'brezoaele-map', get_template_directory_uri() . '/js/map.js', array( 'leaflet-js' ), '1.0.3', true );
+		wp_enqueue_script( 'brezoaele-map', get_template_directory_uri() . '/js/map.js', array( 'leaflet-cluster-js' ), '1.0.4', true );
 		wp_localize_script( 'brezoaele-map', 'brezoaeleMapData', $pins );
 	}
 

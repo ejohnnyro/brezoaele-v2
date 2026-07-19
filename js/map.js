@@ -30,6 +30,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Preluăm pinii din obiectul localizat global
     const pinsData = window.brezoaeleMapData || [];
     
+    // Inițializăm grupul de cluster pentru markeri
+    const markerClusterGroup = L.markerClusterGroup({
+        maxClusterRadius: 30, // Pixelii în care se combină markerii apropiați
+        spiderfyOnMaxZoom: true // Spiderfy automat la click când suntem la zoom maxim
+    });
+    
     // Colectăm toți markerii plasați pentru a-i putea filtra mai târziu
     const mapMarkers = [];
     
@@ -68,7 +74,8 @@ document.addEventListener("DOMContentLoaded", function() {
             fillOpacity: 0.95
         });
         
-        marker.addTo(map).bindPopup(popupContent);
+        marker.bindPopup(popupContent);
+        markerClusterGroup.addLayer(marker);
         
         // Salvăm obiectul de marker pentru filtrare
         mapMarkers.push({
@@ -79,6 +86,9 @@ document.addEventListener("DOMContentLoaded", function() {
             telefon: pin.telefon ? pin.telefon.toLowerCase() : ''
         });
     });
+
+    // Adăugăm grupul de cluster pe hartă
+    map.addLayer(markerClusterGroup);
 
     // Căutare și filtrare în timp real (instant client-side AJAX feel)
     const searchInput = document.getElementById('business-search-input');
@@ -122,12 +132,12 @@ document.addEventListener("DOMContentLoaded", function() {
                               item.telefon.includes(query);
                               
                 if (match) {
-                    if (!map.hasLayer(item.marker)) {
-                        item.marker.addTo(map);
+                    if (!markerClusterGroup.hasLayer(item.marker)) {
+                        markerClusterGroup.addLayer(item.marker);
                     }
                 } else {
-                    if (map.hasLayer(item.marker)) {
-                        map.removeLayer(item.marker);
+                    if (markerClusterGroup.hasLayer(item.marker)) {
+                        markerClusterGroup.removeLayer(item.marker);
                     }
                 }
             });

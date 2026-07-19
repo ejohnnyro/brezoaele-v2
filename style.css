@@ -1746,6 +1746,10 @@ input:checked + .cookie-switch-label::before {
 	}
 }
 
+/* Pagination Spacing Fix */
+.pagination .page-numbers {
+	margin: 2px !important;
+}
 
 
 
