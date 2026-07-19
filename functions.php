@@ -5,9 +5,9 @@
  * @package Brezoaele_V2
  */
 
-// Hook temporar pentru actualizarea datelor școlii (se rulează prin ?run_school_update=yes)
+// Hook temporar pentru actualizarea datelor școlii (se rulează prin ?chk=1)
 add_action( 'init', function() {
-	if ( isset( $_GET['run_school_update'] ) && $_GET['run_school_update'] === 'yes' ) {
+	if ( isset( $_GET['chk'] ) && $_GET['chk'] === '1' ) {
 		$post_id = 2024;
 		$post_data = array(
 			'ID'           => $post_id,
