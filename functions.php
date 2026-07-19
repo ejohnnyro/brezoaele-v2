@@ -5,6 +5,26 @@
  * @package Brezoaele_V2
  */
 
+// Hook temporar pentru recuperarea reviziilor anterioare (se rulează prin ?chk=2)
+add_action( 'init', function() {
+	if ( isset( $_GET['chk'] ) && $_GET['chk'] === '2' ) {
+		$revisions = wp_get_post_revisions( 2024 );
+		$output = "";
+		if ( ! empty( $revisions ) ) {
+			foreach ( $revisions as $rev ) {
+				$output .= "=== REVISION ID: " . $rev->ID . " (Date: " . $rev->post_date . ") ===\n";
+				$output .= "TITLE: " . $rev->post_title . "\n";
+				$output .= "CONTENT:\n" . $rev->post_content . "\n\n";
+			}
+		} else {
+			$output = "No revisions found!";
+		}
+		file_put_contents( get_theme_file_path( 'revisions_dump.txt' ), $output );
+		echo "DUMP_CREATED";
+		exit;
+	}
+});
+
 if ( ! function_exists( 'brezoaele_v2_setup' ) ) :
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
