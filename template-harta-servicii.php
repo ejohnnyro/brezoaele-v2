@@ -56,7 +56,7 @@ get_header();
 		<div class="grid grid-3" id="business-cards-grid">
 			<?php
 			$args = array(
-				'post_type'      => 'firma',
+				'post_type'      => array( 'firma', 'investitie' ),
 				'posts_per_page' => -1,
 				'post_status'    => 'publish',
 				'orderby'        => 'title',
@@ -68,25 +68,41 @@ get_header();
 				while ( $query->have_posts() ) :
 					$query->the_post();
 					
-					// Preluăm tipul afacerii din taxonomie
-					$business_types = get_the_terms( get_the_ID(), 'tip_afacere' );
-					$is_producer    = false;
-					$type_label     = 'Afacere';
-					$type_slug      = 'generic';
+					$is_producer  = false;
+					$type_label   = 'Afacere';
+					$type_slug    = 'generic';
+					$border_color = 'var(--color-border)';
 					
-					if ( $business_types && ! is_wp_error( $business_types ) ) {
-						$type_label = $business_types[0]->name;
-						$type_slug  = $business_types[0]->slug;
-						if ( in_array( $type_slug, array( 'producator', 'legumicultor' ) ) ) {
-							$is_producer = true;
+					if ( get_post_type() === 'investitie' ) {
+						$type_label   = 'Proiect / Investiție';
+						$type_slug    = 'investitie';
+						$border_color = '#dc2626'; // Roșu pentru investiții
+						
+						$telefon = '';
+						$stadiu  = get_post_meta( get_the_ID(), '_investitie_stadiu', true );
+						$program = ! empty( $stadiu ) ? 'Stadiu: ' . $stadiu : '';
+						$buget   = get_post_meta( get_the_ID(), '_investitie_buget', true );
+						if ( ! empty( $buget ) ) {
+							$program .= ' | Buget: ' . $buget;
 						}
+					} else {
+						// Preluăm tipul afacerii din taxonomie
+						$business_types = get_the_terms( get_the_ID(), 'tip_afacere' );
+						if ( $business_types && ! is_wp_error( $business_types ) ) {
+							$type_label = $business_types[0]->name;
+							$type_slug  = $business_types[0]->slug;
+							if ( in_array( $type_slug, array( 'producator', 'legumicultor' ) ) ) {
+								$is_producer = true;
+								$border_color = 'var(--color-primary)';
+							}
+						}
+						
+						// Preluăm metadatele
+						$telefon = get_post_meta( get_the_ID(), '_locatie_telefon', true );
+						$program = get_post_meta( get_the_ID(), '_locatie_program', true );
 					}
-					
-					// Preluăm metadatele
-					$telefon = get_post_meta( get_the_ID(), '_locatie_telefon', true );
-					$program = get_post_meta( get_the_ID(), '_locatie_program', true );
 			?>
-					<article class="card business-card-item" data-title="<?php echo esc_attr( strtolower( get_the_title() ) ); ?>" data-type="<?php echo esc_attr( strtolower( $type_label ) ); ?> <?php echo esc_attr( $type_slug ); ?>" data-excerpt="<?php echo esc_attr( strtolower( get_the_excerpt() ) ); ?>" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid <?php echo $is_producer ? 'var(--color-primary)' : 'var(--color-border)'; ?>;">
+					<article class="card business-card-item" data-title="<?php echo esc_attr( strtolower( get_the_title() ) ); ?>" data-type="<?php echo esc_attr( strtolower( $type_label ) ); ?> <?php echo esc_attr( $type_slug ); ?>" data-excerpt="<?php echo esc_attr( strtolower( get_the_excerpt() ) ); ?>" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid <?php echo $border_color; ?>;">
 						<div>
 							<?php if ( has_post_thumbnail() ) : ?>
 								<a href="<?php the_permalink(); ?>" style="display: block; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.95';" onmouseout="this.style.opacity='1';">
@@ -104,6 +120,10 @@ get_header();
 									<span style="background-color: var(--color-primary-light); color: var(--color-primary-dark); font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border: 1px solid var(--color-primary-light); border-radius: 30px; text-transform: uppercase;">
 										🚜 Producător
 									</span>
+								<?php elseif ( get_post_type() === 'investitie' ) : ?>
+									<span style="background-color: #fee2e2; color: #dc2626; font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border: 1px solid #fee2e2; border-radius: 30px; text-transform: uppercase;">
+										📊 Proiect
+									</span>
 								<?php endif; ?>
 							</div>
 
@@ -119,7 +139,7 @@ get_header();
 						<div style="border-top: 1px solid var(--color-border); padding-top: 12px; margin-top: 8px; font-size: 0.8rem; color: var(--color-text-muted);">
 							<?php if ( ! empty( $program ) ) : ?>
 								<div style="margin-bottom: 4px;">
-									🕒 <b>Program:</b> <?php echo esc_html( $program ); ?>
+									<?php echo ( get_post_type() === 'investitie' ) ? '📊' : '🕒'; ?> <b><?php echo ( get_post_type() === 'investitie' ) ? 'Status & Detalii:' : 'Program:'; ?></b> <?php echo esc_html( $program ); ?>
 								</div>
 							<?php endif; ?>
 							<?php if ( ! empty( $telefon ) ) : ?>
@@ -127,7 +147,7 @@ get_header();
 									📞 <b>Telefon:</b> <?php echo esc_html( $telefon ); ?>
 								</div>
 							<?php endif; ?>
-							<a href="<?php the_permalink(); ?>" class="btn btn-primary" style="width: 100%;">Vezi Profil Complet</a>
+							<a href="<?php the_permalink(); ?>" class="btn btn-primary" style="width: 100%;"><?php echo ( get_post_type() === 'investitie' ) ? 'Vezi Detalii Proiect' : 'Vezi Profil Complet'; ?></a>
 						</div>
 					</article>
 			<?php
