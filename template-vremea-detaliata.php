@@ -9,7 +9,7 @@ get_header();
 ?>
 
 <main id="primary" class="site-main" style="padding: 40px 0; background-color: var(--color-bg);">
-	<div class="container" style="max-width: 900px;">
+	<div class="container" style="max-width: 1320px; margin: 0 auto;">
 		
 		<header class="page-header" style="margin-bottom: 35px; text-align: center;">
 			<h1 class="page-title" style="font-size: 2.5rem; margin-bottom: 8px;">Meteo Brezoaele</h1>
@@ -52,8 +52,8 @@ get_header();
 		<!-- Prognoza pe 7 zile -->
 		<h3 style="font-size: 1.3rem; margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 6px; font-weight: 800; text-transform: uppercase;">Următoarele 7 Zile</h3>
 		
-		<div id="forecast-grid" class="grid grid-3" style="gap: 16px;">
-			<div style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: var(--color-text-muted); font-weight: 700;">
+		<div id="forecast-grid" class="forecast-container">
+			<div style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: var(--color-text-muted); font-weight: 700; width: 100%;">
 				Se încarcă prognoza pe 7 zile...
 			</div>
 		</div>

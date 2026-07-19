@@ -1692,4 +1692,57 @@ input:checked + .cookie-switch-label::before {
 	background-color: #f8fafc;
 }
 
+/* Weather Forecast Layout and Responsive Slider */
+.forecast-container {
+	display: grid !important;
+	grid-template-columns: repeat(7, 1fr) !important;
+	gap: 12px !important;
+	margin-top: 20px;
+}
+
+.forecast-container .card {
+	padding: 16px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+@media (max-width: 1024px) {
+	.forecast-container {
+		display: flex !important;
+		overflow-x: auto !important;
+		scroll-snap-type: x mandatory !important;
+		-webkit-overflow-scrolling: touch !important;
+		gap: 16px !important;
+		padding-bottom: 15px !important;
+		padding-top: 5px !important;
+		margin-left: -15px !important;
+		margin-right: -15px !important;
+		padding-left: 15px !important;
+		padding-right: 15px !important;
+	}
+	
+	.forecast-container::-webkit-scrollbar {
+		height: 6px;
+	}
+	
+	.forecast-container::-webkit-scrollbar-track {
+		background: #f1f5f9;
+		border-radius: 10px;
+	}
+	
+	.forecast-container::-webkit-scrollbar-thumb {
+		background: #cbd5e1;
+		border-radius: 10px;
+	}
+	
+	.forecast-container .card {
+		flex: 0 0 200px !important;
+		scroll-snap-align: start !important;
+		box-shadow: var(--shadow-md) !important;
+	}
+}
+
+
 
