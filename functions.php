@@ -684,3 +684,264 @@ function brezoaele_v2_comment_callback( $comment, $args, $depth ) {
 	<?php
 }
 
+/**
+ * ==========================================================================
+ * ENDPOINT-URI CUSTOM REST API (Brezoaele Content CRUD & Meta Manager)
+ * ==========================================================================
+ */
+
+add_action( 'rest_api_init', function () {
+	// Endpoint general pentru listare și creare postări
+	register_rest_route( 'brezoaele/v1', '/posts', array(
+		array(
+			'methods'             => WP_REST_Server::READABLE,
+			'callback'            => 'brezoaele_rest_list_posts',
+			'permission_callback' => 'brezoaele_rest_permission_check',
+		),
+		array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => 'brezoaele_rest_create_post',
+			'permission_callback' => 'brezoaele_rest_permission_check',
+		)
+	) );
+
+	// Endpoint specific pentru citire, actualizare și ștergere postare după ID
+	register_rest_route( 'brezoaele/v1', '/post/(?P<id>\d+)', array(
+		array(
+			'methods'             => WP_REST_Server::READABLE,
+			'callback'            => 'brezoaele_rest_get_post',
+			'permission_callback' => 'brezoaele_rest_permission_check',
+		),
+		array(
+			'methods'             => WP_REST_Server::EDITABLE,
+			'callback'            => 'brezoaele_rest_update_post',
+			'permission_callback' => 'brezoaele_rest_permission_check',
+		),
+		array(
+			'methods'             => WP_REST_Server::DELETABLE,
+			'callback'            => 'brezoaele_rest_delete_post',
+			'permission_callback' => 'brezoaele_rest_permission_check',
+		)
+	) );
+} );
+
+/**
+ * Verifică dacă utilizatorul curent este autentificat și are drept de editare
+ */
+function brezoaele_rest_permission_check() {
+	return current_user_can( 'edit_posts' );
+}
+
+/**
+ * Returnează toate câmpurile meta asociate unei postări, curățate de array-urile imbricate
+ */
+function brezoaele_get_all_post_meta( $post_id ) {
+	$meta = get_post_meta( $post_id );
+	$cleaned_meta = array();
+	if ( is_array( $meta ) ) {
+		foreach ( $meta as $key => $values ) {
+			if ( is_array( $values ) && count( $values ) === 1 ) {
+				$cleaned_meta[ $key ] = maybe_unserialize( $values[0] );
+			} else {
+				$cleaned_meta[ $key ] = array_map( 'maybe_unserialize', $values );
+			}
+		}
+	}
+	return $cleaned_meta;
+}
+
+/**
+ * REST Callback: Listare postări dintr-un Custom Post Type
+ */
+function brezoaele_rest_list_posts( $request ) {
+	$post_type = $request->get_param( 'post_type' ) ? sanitize_text_field( $request->get_param( 'post_type' ) ) : 'post';
+	$posts_per_page = $request->get_param( 'posts_per_page' ) ? intval( $request->get_param( 'posts_per_page' ) ) : 20;
+	$paged = $request->get_param( 'paged' ) ? intval( $request->get_param( 'paged' ) ) : 1;
+	$post_status = $request->get_param( 'post_status' ) ? sanitize_text_field( $request->get_param( 'post_status' ) ) : 'publish';
+
+	$args = array(
+		'post_type'      => $post_type,
+		'posts_per_page' => $posts_per_page,
+		'paged'          => $paged,
+		'post_status'    => $post_status,
+		'orderby'        => 'ID',
+		'order'          => 'DESC'
+	);
+
+	$query = new WP_Query( $args );
+	$posts = array();
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$id = get_the_ID();
+			$posts[] = array(
+				'ID'          => $id,
+				'post_title'  => get_the_title(),
+				'post_status' => get_post_status( $id ),
+				'post_type'   => get_post_type( $id ),
+				'post_date'   => get_the_date( 'Y-m-d H:i:s' ),
+				'meta'        => brezoaele_get_all_post_meta( $id )
+			);
+		}
+		wp_reset_postdata();
+	}
+
+	return new WP_REST_Response( array(
+		'success'     => true,
+		'total_posts' => intval( $query->found_posts ),
+		'total_pages' => intval( $query->max_num_pages ),
+		'posts'       => $posts
+	), 200 );
+}
+
+/**
+ * REST Callback: Citire postare specifică și toate metadatele ei
+ */
+function brezoaele_rest_get_post( $request ) {
+	$id = intval( $request['id'] );
+	$post = get_post( $id );
+
+	if ( ! $post ) {
+		return new WP_Error( 'post_not_found', 'Postarea solicitată nu a fost găsită.', array( 'status' => 404 ) );
+	}
+
+	return new WP_REST_Response( array(
+		'success'      => true,
+		'ID'           => $post->ID,
+		'post_title'   => $post->post_title,
+		'post_content' => $post->post_content,
+		'post_status'  => $post->post_status,
+		'post_type'    => $post->post_type,
+		'post_date'    => $post->post_date,
+		'meta'         => brezoaele_get_all_post_meta( $post->ID )
+	), 200 );
+}
+
+/**
+ * REST Callback: Creare postare nouă și adăugare meta custom
+ */
+function brezoaele_rest_create_post( $request ) {
+	$params = $request->get_json_params();
+	if ( empty( $params ) ) {
+		$params = $request->get_body_params();
+	}
+
+	$post_type = ! empty( $params['post_type'] ) ? sanitize_text_field( $params['post_type'] ) : 'post';
+	$post_title = ! empty( $params['post_title'] ) ? sanitize_text_field( $params['post_title'] ) : '';
+	$post_content = ! empty( $params['post_content'] ) ? wp_kses_post( $params['post_content'] ) : '';
+	$post_status = ! empty( $params['post_status'] ) ? sanitize_text_field( $params['post_status'] ) : 'publish';
+
+	if ( empty( $post_title ) ) {
+		return new WP_Error( 'missing_title', 'Titlul postării este obligatoriu.', array( 'status' => 400 ) );
+	}
+
+	$post_id = wp_insert_post( array(
+		'post_type'    => $post_type,
+		'post_title'   => $post_title,
+		'post_content' => $post_content,
+		'post_status'  => $post_status,
+	) );
+
+	if ( is_wp_error( $post_id ) ) {
+		return $post_id;
+	}
+
+	// Actualizare câmpuri meta dacă există
+	if ( ! empty( $params['meta'] ) && is_array( $params['meta'] ) ) {
+		foreach ( $params['meta'] as $key => $value ) {
+			$meta_key = sanitize_key( $key );
+			if ( is_array( $value ) ) {
+				update_post_meta( $post_id, $meta_key, $value );
+			} else {
+				update_post_meta( $post_id, $meta_key, sanitize_text_field( $value ) );
+			}
+		}
+	}
+
+	return new WP_REST_Response( array(
+		'success' => true,
+		'ID'      => $post_id,
+		'message' => 'Postarea a fost creată cu succes.'
+	), 201 );
+}
+
+/**
+ * REST Callback: Actualizare postare (titlu, conținut, metadate) după ID
+ */
+function brezoaele_rest_update_post( $request ) {
+	$id = intval( $request['id'] );
+	$post = get_post( $id );
+
+	if ( ! $post ) {
+		return new WP_Error( 'post_not_found', 'Postarea solicitată nu a fost găsită.', array( 'status' => 404 ) );
+	}
+
+	$params = $request->get_json_params();
+	if ( empty( $params ) ) {
+		$params = $request->get_body_params();
+	}
+
+	$update_data = array( 'ID' => $id );
+
+	if ( isset( $params['post_title'] ) ) {
+		$update_data['post_title'] = sanitize_text_field( $params['post_title'] );
+	}
+	if ( isset( $params['post_content'] ) ) {
+		$update_data['post_content'] = wp_kses_post( $params['post_content'] );
+	}
+	if ( isset( $params['post_status'] ) ) {
+		$update_data['post_status'] = sanitize_text_field( $params['post_status'] );
+	}
+
+	if ( count( $update_data ) > 1 ) {
+		$result = wp_update_post( $update_data );
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+	}
+
+	// Actualizare metadate dacă există în payload
+	if ( isset( $params['meta'] ) && is_array( $params['meta'] ) ) {
+		foreach ( $params['meta'] as $key => $value ) {
+			$meta_key = sanitize_key( $key );
+			if ( is_array( $value ) ) {
+				update_post_meta( $id, $meta_key, $value );
+			} else {
+				update_post_meta( $id, $meta_key, sanitize_text_field( $value ) );
+			}
+		}
+	}
+
+	return new WP_REST_Response( array(
+		'success' => true,
+		'ID'      => $id,
+		'message' => 'Postarea a fost actualizată cu succes.'
+	), 200 );
+}
+
+/**
+ * REST Callback: Ștergere postare (mutare în coșul de gunoi) după ID
+ */
+function brezoaele_rest_delete_post( $request ) {
+	$id = intval( $request['id'] );
+	$post = get_post( $id );
+
+	if ( ! $post ) {
+		return new WP_Error( 'post_not_found', 'Postarea solicitată nu a fost găsită.', array( 'status' => 404 ) );
+	}
+
+	$result = wp_trash_post( $id );
+
+	if ( ! $result ) {
+		return new WP_Error( 'delete_failed', 'Nu s-a putut șterge postarea.', array( 'status' => 500 ) );
+	}
+
+	return new WP_REST_Response( array(
+		'success' => true,
+		'ID'      => $id,
+		'message' => 'Postarea a fost trimisă în coșul de gunoi.'
+	), 200 );
+}
+
+
