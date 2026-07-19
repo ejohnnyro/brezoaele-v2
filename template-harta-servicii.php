@@ -55,9 +55,14 @@ get_header();
 		<!-- Grid Carduri Afaceri / Servicii -->
 		<div class="grid grid-3" id="business-cards-grid">
 			<?php
+			$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+			if ( is_front_page() ) {
+				$paged = ( get_query_var( 'page' ) ) ? get_query_var( 'page' ) : 1;
+			}
 			$args = array(
 				'post_type'      => array( 'firma', 'investitie' ),
-				'posts_per_page' => -1,
+				'posts_per_page' => 6,
+				'paged'          => $paged,
 				'post_status'    => 'publish',
 				'orderby'        => 'title',
 				'order'          => 'ASC',
@@ -168,6 +173,20 @@ get_header();
 			<div style="font-size: 3rem; margin-bottom: 12px;">🔍</div>
 			<h3 style="font-family: var(--font-heading); font-weight: 800;">Nu s-au găsit rezultate</h3>
 			<p style="color: var(--color-text-muted); font-size: 0.95rem;">Încearcă să cauți alte cuvinte cheie sau verifică scrierea corectă.</p>
+		</div>
+
+		<!-- Paginație Carduri -->
+		<div style="margin-top: 32px; display: flex; justify-content: center; width: 100%;" class="navigation pagination">
+			<?php 
+			echo paginate_links( array(
+				'total'     => $query->max_num_pages,
+				'current'   => $paged,
+				'mid_size'  => 2,
+				'prev_text' => __( '&larr; Înapoi', 'brezoaele-v2' ),
+				'next_text' => __( 'Înainte &rarr;', 'brezoaele-v2' ),
+				'type'      => 'plain',
+			) );
+			?>
 		</div>
 
 	</div>
