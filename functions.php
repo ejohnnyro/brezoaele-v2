@@ -944,12 +944,6 @@ function brezoaele_rest_delete_post( $request ) {
 	), 200 );
 }
 
-add_action( 'init', function() {
-	require_once ABSPATH . 'wp-admin/includes/plugin.php';
-	if ( ! is_plugin_active( 'ai-article-generator/ai-article-generator.php' ) ) {
-		activate_plugin( 'ai-article-generator/ai-article-generator.php' );
-	}
-} );
 
 
 
