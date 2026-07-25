@@ -1125,6 +1125,20 @@ function brezoaele_customize_nav_menu_objects( $items, $args ) {
 	return $processed_items;
 }
 
+/**
+ * Auto-activare plugin Brezoaele Newsletter
+ */
+add_action( 'init', 'brezoaele_auto_activate_newsletter_plugin' );
+function brezoaele_auto_activate_newsletter_plugin() {
+	if ( file_exists( WP_PLUGIN_DIR . '/brezoaele-newsletter/brezoaele-newsletter.php' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		if ( ! is_plugin_active( 'brezoaele-newsletter/brezoaele-newsletter.php' ) ) {
+			activate_plugin( 'brezoaele-newsletter/brezoaele-newsletter.php' );
+		}
+	}
+}
+
+
 
 
 
