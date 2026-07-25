@@ -963,34 +963,124 @@ function brezoaele_register_stiri_categories() {
 }
 
 /**
- * Adăugare automată meniu dropdown "Știri" cu categoriile în navigarea principală
+ * Customizare automată meniu principal:
+ * 1. Adăugare iconițe emoji pentru TOATE elementele de meniu.
+ * 2. Integrare directă a sub-categoriilor de știri (Locale, Județene, Naționale) în meniul existent "Știri / Informații".
  */
-add_filter( 'wp_nav_menu_items', 'brezoaele_inject_stiri_nav_menu', 20, 2 );
-function brezoaele_inject_stiri_nav_menu( $items, $args ) {
-	if ( isset( $args->theme_location ) && 'menu-1' === $args->theme_location ) {
-		if ( strpos( $items, 'stiri-locale' ) === false ) {
-			$locale_term    = get_term_by( 'slug', 'stiri-locale', 'category' );
-			$judetene_term  = get_term_by( 'slug', 'stiri-judetene', 'category' );
-			$nationale_term = get_term_by( 'slug', 'stiri-nationale', 'category' );
-
-			$locale_url    = $locale_term ? esc_url( get_category_link( $locale_term->term_id ) ) : home_url( '/category/stiri-locale/' );
-			$judetene_url  = $judetene_term ? esc_url( get_category_link( $judetene_term->term_id ) ) : home_url( '/category/stiri-judetene/' );
-			$nationale_url = $nationale_term ? esc_url( get_category_link( $nationale_term->term_id ) ) : home_url( '/category/stiri-nationale/' );
-
-			$stiri_dropdown  = '<li class="menu-item menu-item-has-children nav-stiri-dropdown">';
-			$stiri_dropdown .= '<a href="' . $locale_url . '">📰 Știri</a>';
-			$stiri_dropdown .= '<ul class="sub-menu">';
-			$stiri_dropdown .= '<li class="menu-item"><a href="' . $locale_url . '">🏡 Știri Locale</a></li>';
-			$stiri_dropdown .= '<li class="menu-item"><a href="' . $judetene_url . '">🏛️ Știri Județene</a></li>';
-			$stiri_dropdown .= '<li class="menu-item"><a href="' . $nationale_url . '">🇷🇴 Știri Naționale</a></li>';
-			$stiri_dropdown .= '</ul>';
-			$stiri_dropdown .= '</li>';
-
-			$items = $stiri_dropdown . $items;
-		}
+add_filter( 'wp_nav_menu_objects', 'brezoaele_customize_nav_menu_objects', 20, 2 );
+function brezoaele_customize_nav_menu_objects( $items, $args ) {
+	if ( empty( $items ) || ! is_array( $items ) ) {
+		return $items;
 	}
-	return $items;
+
+	$icon_map = array(
+		'Acasă'                  => '🏠',
+		'Știri / Informații'     => '📰',
+		'Știri & Informații'     => '📰',
+		'Comunicate'             => '📢',
+		'Alerte'                 => '🚨',
+		'Fonduri'                => '🏗️',
+		'Dezbateri'              => '💬',
+		'Sănătate'               => '🏥',
+		'Educație'               => '🎓',
+		'Administrație'          => '🏛️',
+		'Investiții'             => '🏗️',
+		'Firme'                  => '🏢',
+		'Hartă'                  => '🗺️',
+		'Sesizări'               => '📣',
+		'Ghid'                   => '📖',
+		'Vremea'                 => '🌤️',
+		'Contact'                => '📞',
+		'Forum'                  => '❓',
+		'Despre'                 => '📜',
+	);
+
+	$stiri_parent_id = 0;
+	$processed_items = array();
+
+	foreach ( $items as $item ) {
+		// Adăugăm iconiță dacă titlul nu conține deja un emoji
+		if ( ! preg_match( '/[\x{1F300}-\x{1F9FF}\x{2600}-\x{26FF}]/u', $item->title ) ) {
+			foreach ( $icon_map as $key => $icon ) {
+				if ( false !== mb_stripos( $item->title, $key ) ) {
+					$item->title = $icon . ' ' . $item->title;
+					break;
+				}
+			}
+		}
+
+		// Identificăm părintele "Știri / Informații" (ID 1942 sau titlu)
+		if ( (int) $item->ID === 1942 || ( false !== mb_stripos( $item->title, 'Știri' ) && 0 === (int) $item->menu_item_parent ) ) {
+			$stiri_parent_id = $item->ID;
+		}
+
+		$processed_items[] = $item;
+	}
+
+	// Injectăm cele 3 categorii de știri ca primele sub-elemente din sub-meniul "Știri / Informații"
+	if ( $stiri_parent_id > 0 ) {
+		$locale_term    = get_term_by( 'slug', 'stiri-locale', 'category' );
+		$judetene_term  = get_term_by( 'slug', 'stiri-judetene', 'category' );
+		$nationale_term = get_term_by( 'slug', 'stiri-nationale', 'category' );
+
+		$locale_url    = $locale_term ? esc_url( get_category_link( $locale_term->term_id ) ) : home_url( '/category/stiri-locale/' );
+		$judetene_url  = $judetene_term ? esc_url( get_category_link( $judetene_term->term_id ) ) : home_url( '/category/stiri-judetene/' );
+		$nationale_url = $nationale_term ? esc_url( get_category_link( $nationale_term->term_id ) ) : home_url( '/category/stiri-nationale/' );
+
+		$stiri_subitems = array(
+			array(
+				'id'    => 999901,
+				'title' => '🏡 Știri Locale',
+				'url'   => $locale_url,
+			),
+			array(
+				'id'    => 999902,
+				'title' => '🏛️ Știri Județene',
+				'url'   => $judetene_url,
+			),
+			array(
+				'id'    => 999903,
+				'title' => '🇷🇴 Știri Naționale',
+				'url'   => $nationale_url,
+			),
+		);
+
+		$final_items = array();
+		foreach ( $processed_items as $item ) {
+			$final_items[] = $item;
+
+			// Dacă am ajuns la părintele "Știri / Informații", inserăm sub-elementele chiar după el
+			if ( (int) $item->ID === (int) $stiri_parent_id ) {
+				foreach ( $stiri_subitems as $sub ) {
+					$dummy = new stdClass();
+					$dummy->ID = $sub['id'];
+					$dummy->db_id = $sub['id'];
+					$dummy->menu_item_parent = $stiri_parent_id;
+					$dummy->object_id = $sub['id'];
+					$dummy->object = 'custom';
+					$dummy->type = 'custom';
+					$dummy->type_label = 'Custom Link';
+					$dummy->title = $sub['title'];
+					$dummy->url = $sub['url'];
+					$dummy->target = '';
+					$dummy->attr_title = '';
+					$dummy->description = '';
+					$dummy->classes = array( 'menu-item', 'menu-item-type-custom', 'menu-item-stiri-injected' );
+					$dummy->xfn = '';
+					$dummy->current = false;
+					$dummy->current_item_ancestor = false;
+					$dummy->current_item_parent = false;
+
+					$final_items[] = $dummy;
+				}
+			}
+		}
+		return $final_items;
+	}
+
+	return $processed_items;
 }
+
 
 
 
