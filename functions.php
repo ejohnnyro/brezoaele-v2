@@ -1030,7 +1030,13 @@ function brezoaele_customize_nav_menu_objects( $items, $args ) {
 	$processed_items = array();
 
 	foreach ( $items as $item ) {
+		// Eliminăm "Mers Microbuz" (ID 1962 sau URL/Titlu cu microbuz) din meniu
+		if ( (int) $item->ID === 1962 || false !== mb_stripos( $item->title, 'Microbuz' ) || false !== strpos( $item->url, 'microbuz' ) ) {
+			continue;
+		}
+
 		// Adăugăm iconiță dacă titlul nu conține deja un emoji
+
 		if ( ! preg_match( '/[\x{1F300}-\x{1F9FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}]/u', $item->title ) ) {
 			$found_icon = false;
 			foreach ( $icon_map as $key => $icon ) {
