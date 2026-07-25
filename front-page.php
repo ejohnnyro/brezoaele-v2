@@ -487,7 +487,17 @@ if ( $ad_query->have_posts() ) {
 		</div>
 
 	</div>
+<!-- Newsletter Section -->
+<section style="padding: 40px 0; background-color: var(--color-bg);">
+	<div class="container">
+		<?php
+		if ( class_exists( 'Brezoaele_NL_Forms' ) ) {
+			echo Brezoaele_NL_Forms::render_form( 'homepage', 'Abonează-te la Newsletter-ul Comunei Brezoaele', 'Primești gratuit pe email cele mai importante știri locale, anunțuri ale Primăriei și alerte din comună.' );
+		}
+		?>
+	</div>
 </section>
 
 <?php
 get_footer();
+

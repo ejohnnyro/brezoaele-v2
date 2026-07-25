@@ -50,11 +50,17 @@ get_header();
 				</nav>
 
 				<?php
+				// Formular Newsletter sub articol
+				if ( class_exists( 'Brezoaele_NL_Forms' ) ) {
+					echo Brezoaele_NL_Forms::render_form( 'single_post', 'Abonează-te la Newsletter-ul Brezoaele', 'Primește direct pe email noutățile locale, comunicatele Primăriei și alertele de utilități.' );
+				}
+
 				// If comments are open or we have at least one comment, load up the comment template.
 				if ( comments_open() || get_comments_number() ) :
 					comments_template();
 				endif;
 				?>
+
 			</article>
 		<?php
 		endwhile;
