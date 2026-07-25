@@ -975,24 +975,55 @@ function brezoaele_customize_nav_menu_objects( $items, $args ) {
 
 	$icon_map = array(
 		'Acasă'                  => '🏠',
+		'Home'                   => '🏠',
+		'Prima'                  => '🏠',
 		'Știri / Informații'     => '📰',
 		'Știri & Informații'     => '📰',
+		'Știri'                  => '📰',
+		'Informații'             => '📰',
 		'Comunicate'             => '📢',
+		'Anunțuri'               => '📢',
 		'Alerte'                 => '🚨',
+		'Utilități'              => '🚨',
 		'Fonduri'                => '🏗️',
+		'Dezvoltare'             => '🏗️',
+		'Proiecte'               => '🏗️',
 		'Dezbateri'              => '💬',
+		'Opinii'                 => '💬',
 		'Sănătate'               => '🏥',
+		'Social'                 => '🏥',
 		'Educație'               => '🎓',
+		'Cultură'                => '🎓',
+		'Școală'                 => '🎓',
 		'Administrație'          => '🏛️',
+		'Locală'                 => '🏛️',
+		'Primărie'               => '🏛️',
+		'Consiliu'               => '🏛️',
 		'Investiții'             => '🏗️',
 		'Firme'                  => '🏢',
+		'Afaceri'                => '🏢',
+		'Servicii'               => '🏢',
 		'Hartă'                  => '🗺️',
+		'Harta'                  => '🗺️',
 		'Sesizări'               => '📣',
+		'Reclamații'             => '📣',
 		'Ghid'                   => '📖',
+		'Rezident'               => '📖',
 		'Vremea'                 => '🌤️',
+		'Meteo'                  => '🌤️',
 		'Contact'                => '📞',
+		'Telefon'                => '📞',
 		'Forum'                  => '❓',
+		'Întrebări'              => '❓',
 		'Despre'                 => '📜',
+		'Istoric'                => '📜',
+		'Documente'              => '📁',
+		'Formulare'              => '📁',
+		'Taxe'                   => '💳',
+		'Impozite'               => '💳',
+		'Galerie'                => '🖼️',
+		'Foto'                   => '🖼️',
+		'Video'                  => '🎬',
 	);
 
 	$stiri_parent_id = 0;
@@ -1000,12 +1031,18 @@ function brezoaele_customize_nav_menu_objects( $items, $args ) {
 
 	foreach ( $items as $item ) {
 		// Adăugăm iconiță dacă titlul nu conține deja un emoji
-		if ( ! preg_match( '/[\x{1F300}-\x{1F9FF}\x{2600}-\x{26FF}]/u', $item->title ) ) {
+		if ( ! preg_match( '/[\x{1F300}-\x{1F9FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}]/u', $item->title ) ) {
+			$found_icon = false;
 			foreach ( $icon_map as $key => $icon ) {
 				if ( false !== mb_stripos( $item->title, $key ) ) {
 					$item->title = $icon . ' ' . $item->title;
+					$found_icon = true;
 					break;
 				}
+			}
+			// Dacă niciun cuvânt cheie nu s-a potrivit, aplicăm o iconiță implicită
+			if ( ! $found_icon ) {
+				$item->title = '📌 ' . $item->title;
 			}
 		}
 
@@ -1016,6 +1053,7 @@ function brezoaele_customize_nav_menu_objects( $items, $args ) {
 
 		$processed_items[] = $item;
 	}
+
 
 	// Injectăm cele 3 categorii de știri ca primele sub-elemente din sub-meniul "Știri / Informații"
 	if ( $stiri_parent_id > 0 ) {
