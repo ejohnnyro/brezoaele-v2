@@ -944,6 +944,55 @@ function brezoaele_rest_delete_post( $request ) {
 	), 200 );
 }
 
+/**
+ * Înregistrare automată categorii de știri (Locale, Județene, Naționale)
+ */
+add_action( 'init', 'brezoaele_register_stiri_categories' );
+function brezoaele_register_stiri_categories() {
+	$categories = array(
+		'stiri-locale'    => 'Știri Locale',
+		'stiri-judetene'  => 'Știri Județene',
+		'stiri-nationale' => 'Știri Naționale',
+	);
+
+	foreach ( $categories as $slug => $name ) {
+		if ( ! get_term_by( 'slug', $slug, 'category' ) ) {
+			wp_insert_term( $name, 'category', array( 'slug' => $slug ) );
+		}
+	}
+}
+
+/**
+ * Adăugare automată meniu dropdown "Știri" cu categoriile în navigarea principală
+ */
+add_filter( 'wp_nav_menu_items', 'brezoaele_inject_stiri_nav_menu', 20, 2 );
+function brezoaele_inject_stiri_nav_menu( $items, $args ) {
+	if ( isset( $args->theme_location ) && 'menu-1' === $args->theme_location ) {
+		if ( strpos( $items, 'stiri-locale' ) === false ) {
+			$locale_term    = get_term_by( 'slug', 'stiri-locale', 'category' );
+			$judetene_term  = get_term_by( 'slug', 'stiri-judetene', 'category' );
+			$nationale_term = get_term_by( 'slug', 'stiri-nationale', 'category' );
+
+			$locale_url    = $locale_term ? esc_url( get_category_link( $locale_term->term_id ) ) : home_url( '/category/stiri-locale/' );
+			$judetene_url  = $judetene_term ? esc_url( get_category_link( $judetene_term->term_id ) ) : home_url( '/category/stiri-judetene/' );
+			$nationale_url = $nationale_term ? esc_url( get_category_link( $nationale_term->term_id ) ) : home_url( '/category/stiri-nationale/' );
+
+			$stiri_dropdown  = '<li class="menu-item menu-item-has-children nav-stiri-dropdown">';
+			$stiri_dropdown .= '<a href="' . $locale_url . '">📰 Știri</a>';
+			$stiri_dropdown .= '<ul class="sub-menu">';
+			$stiri_dropdown .= '<li class="menu-item"><a href="' . $locale_url . '">🏡 Știri Locale</a></li>';
+			$stiri_dropdown .= '<li class="menu-item"><a href="' . $judetene_url . '">🏛️ Știri Județene</a></li>';
+			$stiri_dropdown .= '<li class="menu-item"><a href="' . $nationale_url . '">🇷🇴 Știri Naționale</a></li>';
+			$stiri_dropdown .= '</ul>';
+			$stiri_dropdown .= '</li>';
+
+			$items = $stiri_dropdown . $items;
+		}
+	}
+	return $items;
+}
+
+
 
 
 
