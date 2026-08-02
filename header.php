@@ -3,8 +3,10 @@
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php wp_title( '|', true, 'right' ); bloginfo( 'name' ); ?></title>
     <?php wp_head(); ?>
 </head>
+
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
@@ -36,6 +38,9 @@
             <button id="search-toggle-btn" class="search-toggle" aria-label="Caută pe site">
                 🔍
             </button>
+
+
+
             <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false" aria-label="Meniu Navigare">
                 <span class="menu-toggle-icon"></span>
             </button>

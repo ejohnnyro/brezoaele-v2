@@ -98,13 +98,23 @@ get_header();
 								<?php endif; ?>
 
 								<?php if ( ! empty( $telefon ) ) : ?>
-									<li style="margin-top: 6px; border-top: 1px dashed var(--color-border); padding-top: 12px; display: flex; flex-direction: column; gap: 6px;">
+									<li style="margin-top: 6px; border-top: 1px dashed var(--color-border); padding-top: 12px; display: flex; flex-direction: column; gap: 8px;">
 										<div style="font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.1;">Telefon Vânzător</div>
-										<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $telefon ) ); ?>" class="btn btn-primary" style="display: block; text-align: center; font-size: 0.85rem; width: 100%;">
+										<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $telefon ) ); ?>" class="btn btn-primary" style="display: block; text-align: center; font-size: 0.85rem; width: 100%; font-weight: 800;">
 											📞 SUNĂ ACUM: <?php echo esc_html( $telefon ); ?>
+										</a>
+										<?php
+										$clean_phone = preg_replace( '/[^0-9]/', '', $telefon );
+										if ( 10 === strlen( $clean_phone ) && '0' === $clean_phone[0] ) {
+											$clean_phone = '4' . $clean_phone;
+										}
+										?>
+										<a href="https://wa.me/<?php echo esc_attr( $clean_phone ); ?>?text=<?php echo rawurlencode( 'Salut! Am văzut anunțul tău "' . get_the_title() . '" pe Brezoaele.ro' ); ?>" target="_blank" class="btn" style="display: block; text-align: center; font-size: 0.85rem; width: 100%; background: #25D366; color: #fff; border: none; font-weight: 800; border-radius: 8px; text-decoration: none;">
+											💬 Contact pe WhatsApp
 										</a>
 									</li>
 								<?php endif; ?>
+
 							</ul>
 						</div>
 

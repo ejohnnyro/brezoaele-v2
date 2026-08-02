@@ -54,11 +54,12 @@ get_header();
 										<li style="display: flex; align-items: center; gap: 10px;">
 											<span style="font-size: 1.3rem; line-height: 1;">📊</span>
 											<div>
-												<div style="font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.1;">Stadiu Implementare</div>
-												<div style="font-weight: 700; font-size: 0.95rem; color: var(--color-text-dark);"><?php echo esc_html( $stadiu ); ?></div>
+												<div style="font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.1; margin-bottom: 4px;">Stadiu Implementare</div>
+												<div><?php echo brezoaele_get_investitie_stadiu_badge( $stadiu ); ?></div>
 											</div>
 										</li>
 									<?php endif; ?>
+
 
 									<?php if ( ! empty( $buget ) ) : ?>
 										<li style="display: flex; align-items: center; gap: 10px;">

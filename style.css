@@ -1601,21 +1601,25 @@ h3 {
     cursor: default;
 }
 
-/* Fullscreen Search Overlay & Toggle Button */
-.search-toggle {
+/* Fullscreen Search Overlay & Account Button */
+.search-toggle,
+.account-header-btn {
     background: none;
     border: none;
     font-size: 1.25rem;
     cursor: pointer;
     padding: 8px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.2s ease, color 0.2s ease;
     color: var(--color-text-dark);
+    text-decoration: none;
+    line-height: 1;
 }
 
-.search-toggle:hover {
+.search-toggle:hover,
+.account-header-btn:hover {
     color: var(--color-primary);
     transform: scale(1.1);
 }
@@ -1626,7 +1630,17 @@ h3 {
         align-items: center;
         gap: 16px;
     }
+    .nav-account-item .menu-account-text {
+        display: none;
+    }
+    .nav-account-item a {
+        font-size: 1.25rem !important;
+        padding: 6px 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+    }
 }
+
 
 @media (max-width: 1023px) {
     .main-navigation {
@@ -1635,7 +1649,8 @@ h3 {
         gap: 10px !important;
     }
 
-    .search-toggle {
+    .search-toggle,
+    .account-header-btn {
         order: 1 !important;
         border: 1px solid var(--color-border);
         width: 42px;
@@ -1643,6 +1658,7 @@ h3 {
         border-radius: var(--border-radius-md);
         background-color: var(--color-card);
     }
+
 
     .menu-toggle {
         order: 2 !important;

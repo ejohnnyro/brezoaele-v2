@@ -18,7 +18,28 @@ if ( post_password_required() ) {
 }
 ?>
 
+<style>
+.comments-area ol.comment-list,
+.comments-area ol.children {
+	list-style: none !important;
+	padding: 0 !important;
+}
+.comments-area ol.children {
+	margin: 14px 0 0 24px !important;
+	padding: 0 0 0 16px !important;
+	border-left: 3px solid #047857 !important;
+}
+@media (max-width: 640px) {
+	.comments-area ol.children {
+		margin-left: 10px !important;
+		padding-left: 10px !important;
+		border-left-width: 2px !important;
+	}
+}
+</style>
+
 <div id="comments" class="comments-area card" style="margin-top: 30px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); background: #ffffff;">
+
 
 	<?php if ( have_comments() ) : ?>
 		<h2 class="comments-title" style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-heading); margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 8px;">
