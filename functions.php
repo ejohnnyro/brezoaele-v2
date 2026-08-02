@@ -394,6 +394,50 @@ add_action( 'init', 'brezoaele_seed_anunt_categories', 99 );
 
 
 /**
+ * Auto-create required frontend pages if they don't exist.
+ * Uses a version flag to run only once.
+ */
+function brezoaele_seed_required_pages() {
+	if ( get_option( 'brezoaele_pages_seeded_v1' ) ) {
+		return;
+	}
+
+	$pages = array(
+		array(
+			'title'    => 'Editează Anunț',
+			'slug'     => 'editeaza-anunt',
+			'template' => 'page-editeaza-anunt.php',
+		),
+	);
+
+	foreach ( $pages as $page_data ) {
+		// Check if a page with this slug already exists (any status)
+		$existing = get_page_by_path( $page_data['slug'], OBJECT, 'page' );
+		if ( $existing ) {
+			continue; // Already exists, skip
+		}
+
+		$page_id = wp_insert_post( array(
+			'post_title'    => $page_data['title'],
+			'post_name'     => $page_data['slug'],
+			'post_status'   => 'publish',
+			'post_type'     => 'page',
+			'post_author'   => 1,
+			'post_content'  => '',
+			'comment_status'=> 'closed',
+		) );
+
+		if ( $page_id && ! is_wp_error( $page_id ) ) {
+			update_post_meta( $page_id, '_wp_page_template', $page_data['template'] );
+		}
+	}
+
+	update_option( 'brezoaele_pages_seeded_v1', 1 );
+}
+add_action( 'init', 'brezoaele_seed_required_pages', 100 );
+
+
+/**
  * Register CPT: Firmă / Producător Local
  */
 function brezoaele_v2_register_firma_cpt() {
