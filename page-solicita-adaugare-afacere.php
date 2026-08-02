@@ -320,6 +320,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 				</div>
 			</div>
 
+		<?php else : // No order just placed — show the registration form ?>
 		<?php // Form visible to all; login check happens at submit button ?>
 
 			<header class="page-header" style="margin-bottom: 24px;">
@@ -661,7 +662,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 			});
 			</script>
 
-
+		<?php endif; // end if ($order_placed) / else (show form) ?>
 
 	</div>
 </main>
