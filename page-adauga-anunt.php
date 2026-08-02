@@ -11,7 +11,7 @@ $current_user = wp_get_current_user();
 $errors       = array();
 $success_msg  = '';
 
-// Process form submission
+// Process form submission — only when logged in
 if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['submit_anunt'] ) ) {
 	if ( ! isset( $_POST['anunt_nonce'] ) || ! wp_verify_nonce( $_POST['anunt_nonce'], 'submit_anunt_action' ) ) {
 		$errors[] = 'Token de securitate invalid. Te rugăm să încerci din nou.';
@@ -190,20 +190,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 <main id="primary" class="site-main" style="padding: 40px 0; background-color: var(--color-bg);">
 	<div class="container">
 
-		<?php if ( ! $is_logged_in ) : ?>
-			<div class="card" style="max-width: 600px; margin: 0 auto; padding: 40px 30px; text-align: center; background: #ffffff; border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); box-shadow: 0 10px 25px rgba(0,0,0,0.04);">
-				<div style="font-size: 3rem; margin-bottom: 12px;">🔒</div>
-				<h1 style="font-size: 1.6rem; font-weight: 900; font-family: var(--font-heading); margin-bottom: 8px;">
-					Autentificare Obligatorie
-				</h1>
-				<p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 24px;">
-					Pentru a publica un anunț pe Brezoaele.ro, este necesar să te conectezi în contul tău sau să îți creezi un cont nou gratuit.
-				</p>
-				<a href="<?php echo esc_url( home_url( '/contul-meu/' ) ); ?>" class="btn btn-primary" style="padding: 12px 24px; font-weight: 800; font-size: 0.95rem;">
-					Conectează-te / Creează Cont Gratuit &rarr;
-				</a>
-			</div>
-		<?php else : ?>
+		<?php // Form visible to all; login check happens at submit button ?>
 
 			<header class="page-header" style="margin-bottom: 24px;">
 				<h1 class="page-title" style="font-size: 2.2rem; font-weight: 900; font-family: var(--font-heading); margin-bottom: 6px;">
@@ -394,11 +381,22 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							</div>
 						</div>
 
+						<?php if ( $is_logged_in ) : ?>
 						<button type="submit" name="submit_anunt" class="btn btn-primary" style="padding: 14px; font-weight: 800; font-size: 1rem; border-radius: 8px;">
 							🚀 Salvează & Publică Anunțul &rarr;
 						</button>
-					</form>
-				</div>
+					<?php else : ?>
+						<div style="padding: 20px; background: #f0fdf4; border: 2px solid #047857; border-radius: 10px; text-align: center;">
+							<p style="font-size: 0.95rem; font-weight: 700; color: #065f46; margin: 0 0 12px 0;">
+								🔐 Pentru a publica anunțul completat, este necesar să te conectezi în cont sau să îți creezi un cont gratuit.
+							</p>
+							<a href="<?php echo esc_url( home_url( '/contul-meu/?redirect_to=' . urlencode( get_permalink() ) ) ); ?>" class="btn btn-primary" style="padding: 12px 24px; font-weight: 800; font-size: 0.95rem; display: inline-block;">
+								👤 Conectează-te / Creează Cont Gratuit &rarr;
+							</a>
+						</div>
+					<?php endif; ?>
+				</form>
+			</div>
 
 				<!-- COLOANA DREAPTA: CARD BENEFICII ANUNTURI PREMIUM VS GRATUIT -->
 				<div>
@@ -477,8 +475,6 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 				togglePJ();
 			});
 			</script>
-
-		<?php endif; ?>
 
 	</div>
 </main>

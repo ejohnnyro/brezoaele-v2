@@ -226,12 +226,15 @@ if ( $is_logged_in && isset( $_GET['action'], $_GET['delete_anunt'] ) && 'delete
 									</div>
 								</div>
 
-								<div style="display: flex; gap: 8px; align-items: center;">
+								<div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
 									<?php if ( '1' !== $is_premium ) : ?>
 										<a href="<?php echo esc_url( home_url( '/adauga-anunt/?upgrade_id=' . $anunt->ID ) ); ?>" class="btn" style="background: #fef3c7; color: #92400e; border: 1px solid #fde047; font-weight: 800; font-size: 0.8rem; padding: 6px 12px; border-radius: 6px; text-decoration: none;">
 											⭐ Promovează (10 LEI)
 										</a>
 									<?php endif; ?>
+									<a href="<?php echo esc_url( home_url( '/editeaza-anunt/?anunt_id=' . $anunt->ID ) ); ?>" class="btn" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-weight: 700; font-size: 0.8rem; padding: 6px 12px; border-radius: 6px; text-decoration: none;">
+										✏️ Editează
+									</a>
 									<a href="<?php echo esc_url( home_url( '/contul-meu/?action=delete&delete_anunt=' . $anunt->ID ) ); ?>" onclick="return confirm('Ești sigur că vrei să ștergi acest anunț?');" class="btn" style="background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; font-weight: 700; font-size: 0.8rem; padding: 6px 12px; border-radius: 6px; text-decoration: none;">
 										🗑️ Șterge
 									</a>

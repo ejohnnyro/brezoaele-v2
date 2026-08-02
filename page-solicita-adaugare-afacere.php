@@ -320,20 +320,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 				</div>
 			</div>
 
-		<?php elseif ( ! $is_logged_in ) : ?>
-			<div class="card" style="max-width: 600px; margin: 0 auto; padding: 40px 30px; text-align: center; background: #ffffff; border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); box-shadow: 0 10px 25px rgba(0,0,0,0.04);">
-				<div style="font-size: 3rem; margin-bottom: 12px;">🔒</div>
-				<h1 style="font-size: 1.6rem; font-weight: 900; font-family: var(--font-heading); margin-bottom: 8px;">
-					Autentificare Obligatorie
-				</h1>
-				<p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 24px;">
-					Pentru a înregistra o afacere pe Harta Serviciilor Brezoaele, este necesar să te conectezi în contul tău sau să îți creezi un cont nou.
-				</p>
-				<a href="<?php echo esc_url( home_url( '/contul-meu/' ) ); ?>" class="btn btn-primary" style="padding: 12px 24px; font-weight: 800; font-size: 0.95rem;">
-					Conectează-te / Creează Cont Gratuit &rarr;
-				</a>
-			</div>
-		<?php else : ?>
+		<?php // Form visible to all; login check happens at submit button ?>
 
 			<header class="page-header" style="margin-bottom: 24px;">
 				<h1 class="page-title" style="font-size: 2.2rem; font-weight: 900; font-family: var(--font-heading); margin-bottom: 6px;">
@@ -548,9 +535,20 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 									<strong style="color: #166534; font-size: 1.1rem;">Abonament Anual: 149 LEI / an</strong>
 									<div style="font-size: 0.78rem; color: #15803d;">Plată securizată ECOMPLEX.RO SRL</div>
 								</div>
+							<?php if ( $is_logged_in ) : ?>
 								<button type="submit" name="submit_firma" class="btn btn-primary" style="padding: 12px 20px; font-weight: 800; font-size: 0.95rem; border-radius: 8px;">
 									🚀 Trimite & Continuă &rarr;
 								</button>
+							<?php else : ?>
+								<div style="flex: 1; text-align: right;">
+									<p style="font-size: 0.88rem; font-weight: 700; color: #065f46; margin: 0 0 8px 0;">
+										🔐 Conectează-te pentru a trimite formularul completat.
+									</p>
+									<a href="<?php echo esc_url( home_url( '/contul-meu/?redirect_to=' . urlencode( get_permalink() ) ) ); ?>" class="btn btn-primary" style="padding: 10px 20px; font-weight: 800; font-size: 0.9rem; display: inline-block;">
+										👤 Conectează-te / Creează Cont Gratuit &rarr;
+									</a>
+								</div>
+							<?php endif; ?>
 							</div>
 						</div>
 					</form>
@@ -663,7 +661,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 			});
 			</script>
 
-		<?php endif; ?>
+
 
 	</div>
 </main>
