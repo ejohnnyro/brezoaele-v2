@@ -405,6 +405,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 				}
 				/* ── Grid 2 coloane facturare → 1 coloana pe mobil ── */
 				.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+				.form-grid-2 select, .form-grid-2 input { max-width: 100%; box-sizing: border-box; }
 				@media (max-width: 640px) {
 					.form-grid-2 { grid-template-columns: 1fr; }
 				}
@@ -443,10 +444,10 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							<input type="text" id="post_title" name="post_title" required placeholder="Ex: Vulcanizare Mobilă Brezoaele, Farmacia Bella..." style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box;">
 						</div>
 
-						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+						<div class="form-grid-2" style="gap: 16px;">
 							<div>
 								<label for="categorie" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 4px;">Categorie Serviciu *</label>
-								<select id="categorie" name="categorie" style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; background:#fff;">
+								<select id="categorie" name="categorie" style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; background:#fff; box-sizing: border-box; max-width: 100%;">
 									<option value="Comerț & Magazine">Comerț & Magazine</option>
 									<option value="Construcții & Reparații">Construcții & Reparații</option>
 									<option value="Sănătate & Farmacii">Sănătate & Farmacii</option>
@@ -461,7 +462,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							</div>
 						</div>
 
-						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+						<div class="form-grid-2" style="gap: 16px;">
 							<div>
 								<label for="adresa" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 4px;">Adresă / Locație Fizică</label>
 								<input type="text" id="adresa" name="adresa" placeholder="Str. Principală nr. 24, Brezoaele" style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box;">
@@ -488,7 +489,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							
 							<div id="pin-picker-map" style="width: 100%; height: 260px; border-radius: 8px; border: 2px solid #cbd5e1; margin-bottom: 10px; z-index: 1;"></div>
 
-							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+							<div class="form-grid-2">
 								<div>
 									<label style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Latitudine</label>
 									<input type="text" id="latitude" name="latitude" value="44.561854" readonly style="width: 100%; padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem; background: #f8fafc;">
@@ -501,7 +502,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 						</div>
 
 						<!-- IMAGINE REPREZENTATIVA & GALERIE -->
-						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+						<div class="form-grid-2" style="gap: 14px;">
 							<div>
 								<label for="firma_image" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 4px;">Logo / Foto Reprezentativă</label>
 								<input type="file" id="firma_image" name="firma_image" accept="image/*" style="width: 100%; padding: 8px; border: 1.5px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; font-size:0.8rem;">
@@ -566,7 +567,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #475569;">Denumire Societate / Firmă *</label>
 									<input type="text" name="company_name" placeholder="Ex: SC SERVICII BREZOAELE SRL" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
 								</div>
-								<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+								<div class="form-grid-2">
 									<div>
 										<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #475569;">CUI / CIF *</label>
 										<input type="text" name="company_cui" placeholder="RO12345678" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">

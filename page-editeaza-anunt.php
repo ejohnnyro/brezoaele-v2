@@ -212,6 +212,11 @@ $max_photos       = ( '1' === $is_premium ) ? 10 : 3;
 							grid-template-columns: 7fr 5fr !important;
 						}
 					}
+					.edit-form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px; }
+					.edit-form-grid-2 select, .edit-form-grid-2 input { max-width: 100%; box-sizing: border-box; }
+					@media (max-width: 640px) {
+						.edit-form-grid-2 { grid-template-columns: 1fr; }
+					}
 				</style>
 
 				<!-- LEFT: EDIT FORM -->
@@ -237,7 +242,7 @@ $max_photos       = ( '1' === $is_premium ) ? 10 : 3;
 								style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box;">
 						</div>
 
-						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+						<div class="edit-form-grid-2">
 							<!-- CATEGORIE -->
 							<div>
 								<label for="anunt_category" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 4px;">Categorie</label>
@@ -249,7 +254,7 @@ $max_photos       = ( '1' === $is_premium ) ? 10 : 3;
 									'name'             => 'anunt_category',
 									'id'               => 'anunt_category',
 									'selected'         => $existing_cat_id,
-									'style'            => 'width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;',
+									'style'            => 'width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; max-width: 100%;',
 									'hide_empty'       => 0,
 									'hierarchical'     => 1,
 									'orderby'          => 'name',
@@ -267,7 +272,7 @@ $max_photos       = ( '1' === $is_premium ) ? 10 : 3;
 							</div>
 						</div>
 
-						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+						<div class="edit-form-grid-2">
 							<!-- TELEFON -->
 							<div>
 								<label for="telefon" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 4px;">Telefon Contact *</label>
