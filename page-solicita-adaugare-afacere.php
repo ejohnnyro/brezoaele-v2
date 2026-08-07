@@ -362,15 +362,10 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 				@media (max-width: 991px) {
 					.benefits-col { order: -1; }
 				}
-				/* ── Collapse card beneficii (eMAG-style) ── */
+				/* ── Collapse card beneficii ── */
 				.benefits-collapsible {
 					position: relative;
-					max-height: 220px;
-					overflow: hidden;
 					transition: max-height 0.4s ease;
-				}
-				.benefits-collapsible.expanded {
-					max-height: 1000px;
 				}
 				.benefits-fade-overlay {
 					position: absolute;
@@ -396,8 +391,11 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 					text-align: center;
 					letter-spacing: 0.01em;
 				}
+				.benefits-fade-overlay { display: none; } /* hidden on desktop */
 				@media (max-width: 991px) {
-					.benefits-collapsible { max-height: 220px; } /* activ doar pe mobil */
+					.benefits-collapsible { max-height: 220px; overflow: hidden; }
+					.benefits-collapsible.expanded { max-height: 1000px; }
+					.benefits-fade-overlay { display: block; }
 					.benefits-toggle-btn  { display: block; }
 				}
 				/* ── PF/PJ radio buttons stacked pe mobil ── */

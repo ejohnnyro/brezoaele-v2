@@ -218,17 +218,68 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 			<?php endif; ?>
 
 			<!-- GRID 2 COLOANE: STANGA FORMULAR, DREAPTA CARD BENEFICII PACHETE -->
-			<div style="display: grid; grid-template-columns: 1fr; gap: 24px;" class="ad-registration-grid">
-				<style>
-					@media (min-width: 992px) {
-						.ad-registration-grid {
-							grid-template-columns: 7fr 5fr !important;
-						}
-					}
-				</style>
+			<style>
+				.ad-registration-grid {
+					display: grid;
+					grid-template-columns: 1fr;
+					gap: 24px;
+				}
+				@media (min-width: 992px) {
+					.ad-registration-grid { grid-template-columns: 7fr 5fr; }
+					.ad-benefits-col { order: 0; }
+					.ad-form-col     { order: 0; }
+				}
+				@media (max-width: 991px) {
+					.ad-benefits-col { order: -1; }
+				}
+				/* eMAG-style collapse — MOBILE ONLY */
+				.ad-benefits-collapsible {
+					position: relative;
+					transition: max-height 0.4s ease;
+				}
+				.ad-benefits-fade {
+					display: none; /* hidden on desktop */
+					position: absolute;
+					bottom: 0; left: 0; right: 0; height: 80px;
+					background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff 90%);
+					pointer-events: none;
+					transition: opacity 0.3s ease;
+				}
+				.ad-toggle-btn {
+					display: none;
+					width: 100%; background: none; border: none;
+					color: #b45309; font-weight: 800; font-size: 0.9rem;
+					cursor: pointer; padding: 10px 0 4px; text-align: center;
+				}
+				@media (max-width: 991px) {
+					.ad-benefits-collapsible { max-height: 220px; overflow: hidden; }
+					.ad-benefits-collapsible.expanded { max-height: 1000px; }
+					.ad-benefits-collapsible.expanded .ad-benefits-fade { opacity: 0; }
+					.ad-benefits-fade { display: block; }
+					.ad-toggle-btn { display: block; }
+				}
+				/* PF/PJ stacked on mobile */
+				.billing-type-opts { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 14px; }
+				@media (max-width: 640px) {
+					.billing-type-opts { flex-direction: column; gap: 12px; }
+				}
+				/* 2-col billing grids responsive */
+				.ad-form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px; }
+				/* also ensure selects never overflow on mobile */
+				.ad-form-grid-2 select, .ad-form-grid-2 input { max-width: 100%; box-sizing: border-box; }
+				@media (max-width: 640px) {
+					.ad-form-grid-2 { grid-template-columns: 1fr; }
+				}
+				/* Submit full-width on mobile */
+				.ad-submit-btn { width: 100%; padding: 14px; font-weight: 800; font-size: 1rem; border-radius: 8px; text-align: center; }
+				.ad-login-prompt { padding: 20px; background: #f0fdf4; border: 2px solid #047857; border-radius: 10px; }
+				.ad-login-prompt p { font-size: 0.95rem; font-weight: 700; color: #065f46; margin: 0 0 12px; }
+				.ad-login-prompt .btn { display: block; width: 100%; text-align: center; padding: 12px 20px; font-weight: 800; font-size: 0.95rem; box-sizing: border-box; }
+			</style>
+			<div class="ad-registration-grid">
 
 				<!-- COLOANA STANGA: FORMULAR -->
-				<div>
+				<div class="ad-form-col">
 					<form method="post" enctype="multipart/form-data" class="card" style="padding: 28px; background: #ffffff; border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); display: flex; flex-direction: column; gap: 20px;">
 						<?php wp_nonce_field( 'submit_anunt_action', 'anunt_nonce' ); ?>
 
@@ -237,7 +288,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							<label style="display: block; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--color-text-dark); margin-bottom: 10px;">
 								⭐ Alege Pachetul de Afișare:
 							</label>
-							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+							<div class="ad-form-grid-2" style="gap: 14px;">
 								
 								<!-- Pachet Gratuit -->
 								<label style="border: 2px solid #cbd5e1; border-radius: 10px; padding: 14px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; background: #fafafa; transition: border-color 0.2s;" id="pkg-free-box">
@@ -271,7 +322,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							<input type="text" id="post_title" name="post_title" required placeholder="Ex: Vând teren intravilan Brezoaele 1000 mp..." style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box;">
 						</div>
 
-						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+						<div class="ad-form-grid-2" style="gap: 16px;">
 							<div>
 								<label for="anunt_category" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 4px;">Categorie Anunț</label>
 								<?php
@@ -281,7 +332,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 									'name'             => 'anunt_category',
 									'id'               => 'anunt_category',
 									'class'            => 'widefat',
-									'style'            => 'width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;',
+									'style'            => 'width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; max-width: 100%;',
 									'hide_empty'       => 0,
 									'hierarchical'     => 1,
 									'orderby'          => 'name',
@@ -296,7 +347,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							</div>
 						</div>
 
-						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+						<div class="ad-form-grid-2" style="gap: 16px;">
 							<div>
 								<label for="telefon" style="display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 4px;">Telefon Contact *</label>
 								<input type="tel" id="telefon" name="telefon" required placeholder="07xx xxx xxx" style="width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box;">
@@ -326,34 +377,34 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 								🧾 Date Facturare Fiscală (EuPlatesc.ro)
 							</h3>
 
-							<div style="margin-bottom: 14px;">
-								<label style="font-weight: 700; font-size: 0.85rem; margin-right: 14px;">
+							<div class="billing-type-opts">
+								<label style="font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
 									<input type="radio" name="billing_type" value="pf" checked id="bill-pf"> Persoană Fizică
 								</label>
-								<label style="font-weight: 700; font-size: 0.85rem;">
+								<label style="font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
 									<input type="radio" name="billing_type" value="pj" id="bill-pj"> Persoană Juridică (Firmă / PFA)
 								</label>
 							</div>
 
-							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px;">
+							<div class="ad-form-grid-2">
 								<div>
 									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #64748b;">Nume *</label>
-									<input type="text" name="lname" value="<?php echo esc_attr( $current_user->last_name ); ?>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+									<input type="text" name="lname" value="<?php echo esc_attr( $current_user->last_name ); ?>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
 								</div>
 								<div>
 									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #64748b;">Prenume *</label>
-									<input type="text" name="fname" value="<?php echo esc_attr( $current_user->first_name ); ?>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+									<input type="text" name="fname" value="<?php echo esc_attr( $current_user->first_name ); ?>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
 								</div>
 							</div>
 
-							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px;">
+							<div class="ad-form-grid-2">
 								<div>
 									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #64748b;">Email Factură *</label>
-									<input type="email" name="email" value="<?php echo esc_attr( $current_user->user_email ); ?>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+									<input type="email" name="email" value="<?php echo esc_attr( $current_user->user_email ); ?>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
 								</div>
 								<div>
 									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #64748b;">Telefon Factură *</label>
-									<input type="tel" name="phone" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+									<input type="tel" name="phone" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
 								</div>
 							</div>
 
@@ -363,7 +414,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #64748b;">Denumire Societate / Firmă *</label>
 									<input type="text" name="company_name" placeholder="Ex: SC EXEMPLU SRL" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
 								</div>
-								<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+								<div class="ad-form-grid-2">
 									<div>
 										<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #64748b;">CUI / CIF *</label>
 										<input type="text" name="company_cui" placeholder="RO12345678" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
@@ -399,9 +450,10 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 			</div>
 
 				<!-- COLOANA DREAPTA: CARD BENEFICII ANUNTURI PREMIUM VS GRATUIT -->
-				<div>
+				<div class="ad-benefits-col">
 					<div class="card" style="padding: 24px; background: #ffffff; border: 2px solid #f59e0b; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md); position: sticky; top: 90px;">
-						
+
+						<!-- Header preț — mereu vizibil -->
 						<div style="text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 18px;">
 							<span style="background: #fef3c7; color: #b45309; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; border: 1px solid #fde047;">
 								⭐ BENEFICII PACHET PREMIUM
@@ -414,38 +466,46 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							</p>
 						</div>
 
-						<h4 style="font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: #0f172a; margin-bottom: 12px;">
-							De ce să alegi Pachetul Premium (10 LEI):
-						</h4>
+						<!-- Corp colapsabil (eMAG-style) — trunchiat pe mobil -->
+						<div class="ad-benefits-collapsible" id="ad-benefits-body">
+							<div class="ad-benefits-fade"></div>
 
-						<ul style="list-style: none; padding: 0; margin: 0 0 20px 0; display: flex; flex-direction: column; gap: 12px; font-size: 0.85rem;">
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">📌</span>
-								<div><strong>Fixat în Capul Listei (Sticky Top)</strong>: Anunțul rămâne primul în listă pe toată durata celor 30 de zile.</div>
-							</li>
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">⭐</span>
-								<div><strong>Ecuson & Card Evidențiat</strong>: Bordură aurie și ecuson vizibil ⭐ PREMIUM pentru atragerea privirilor.</div>
-							</li>
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">📸</span>
-								<div><strong>Până la 10 Fotografii HD</strong>: Galerie extinsă de imagini (față de doar 3 poze la pachetul gratuit).</div>
-							</li>
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">💬</span>
-								<div><strong>Buton Direct Contact WhatsApp</strong>: Cumpărătorii te pot contacta cu 1-click cu mesaj pre-completat.</div>
-							</li>
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">🖼️</span>
-								<div><strong>Compresie Automată 1080x1080px</strong>: Pozele sunt optimizate automat pe server fără pierdere de aspect ratio.</div>
-							</li>
-						</ul>
+							<h4 style="font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: #0f172a; margin-bottom: 12px;">
+								De ce să alegi Pachetul Premium (10 LEI):
+							</h4>
 
-						<!-- INFORMARE FISCALA ECOMPLEX.RO SRL -->
-						<div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 8px; font-size: 0.78rem; color: #475569; line-height: 1.4;">
-							<strong>🧾 Informare Fiscală & Facturare:</strong><br/>
-							Facturarea este realizată de către <strong>ECOMPLEX.RO SRL</strong>, societate neplătitoare de TVA (facturare cu TVA 0%). Factura fiscală se poate introduce în contabilitate sub formă de cheltuială deductibilă (fără TVA deductibil).
+							<ul style="list-style: none; padding: 0; margin: 0 0 20px 0; display: flex; flex-direction: column; gap: 12px; font-size: 0.85rem;">
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">📌</span>
+									<div><strong>Fixat în Capul Listei (Sticky Top)</strong>: Anunțul rămâne primul în listă pe toată durata celor 30 de zile.</div>
+								</li>
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">⭐</span>
+									<div><strong>Ecuson &amp; Card Evidențiat</strong>: Bordură aurie și ecuson vizibil ⭐ PREMIUM pentru atragerea privirilor.</div>
+								</li>
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">📸</span>
+									<div><strong>Până la 10 Fotografii HD</strong>: Galerie extinsă de imagini (față de doar 3 poze la pachetul gratuit).</div>
+								</li>
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">💬</span>
+									<div><strong>Buton Direct Contact WhatsApp</strong>: Cumpărătorii te pot contacta cu 1-click cu mesaj pre-completat.</div>
+								</li>
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">🖼️</span>
+									<div><strong>Compresie Automată 1080x1080px</strong>: Pozele sunt optimizate automat pe server fără pierdere de aspect ratio.</div>
+								</li>
+							</ul>
+
+							<div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 8px; font-size: 0.78rem; color: #475569; line-height: 1.4;">
+								<strong>🧾 Informare Fiscală &amp; Facturare:</strong><br/>
+								Facturarea este realizată de către <strong>ECOMPLEX.RO SRL</strong>, societate neplătitoare de TVA (TVA 0%). Factura fiscală se poate introduce în contabilitate sub formă de cheltuială deductibilă.
+							</div>
 						</div>
+						<button class="ad-toggle-btn" id="ad-toggle-btn" type="button" aria-expanded="false">
+							▼ Arată toate beneficiile
+						</button>
+
 					</div>
 				</div>
 			</div>
@@ -473,6 +533,17 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 				$('input[name="billing_type"]').on('change', togglePJ);
 				togglePackage();
 				togglePJ();
+
+				// eMAG-style collapse for benefits card (mobile only)
+				var adBody = document.getElementById('ad-benefits-body');
+				var adBtn  = document.getElementById('ad-toggle-btn');
+				if (adBtn && adBody) {
+					adBtn.addEventListener('click', function() {
+						var exp = adBody.classList.toggle('expanded');
+						adBtn.setAttribute('aria-expanded', exp);
+						adBtn.textContent = exp ? '▲ Ascunde' : '▼ Arată toate beneficiile';
+					});
+				}
 			});
 			</script>
 
