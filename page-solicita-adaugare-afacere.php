@@ -343,17 +343,95 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 			<?php endif; ?>
 
 			<!-- GRID CU 2 COLOANE: STANGA FORMULAR & MAP PIN PICKER, DREAPTA CARD BENEFICII -->
-			<div style="display: grid; grid-template-columns: 1fr; gap: 24px;" class="business-registration-grid">
-				<style>
-					@media (min-width: 992px) {
-						.business-registration-grid {
-							grid-template-columns: 7fr 5fr !important;
-						}
+			<style>
+				/* ── Grid principal ── */
+				.business-registration-grid {
+					display: grid;
+					grid-template-columns: 1fr;
+					gap: 24px;
+				}
+				@media (min-width: 992px) {
+					.business-registration-grid {
+						grid-template-columns: 7fr 5fr;
 					}
-				</style>
+					/* Pe desktop cardul de beneficii e în coloana 2 (natural) */
+					.benefits-col { order: 0; }
+					.form-col     { order: 0; }
+				}
+				/* ── Pe mobil: cardul de beneficii apare DEASUPRA formularului ── */
+				@media (max-width: 991px) {
+					.benefits-col { order: -1; }
+				}
+				/* ── Collapse card beneficii (eMAG-style) ── */
+				.benefits-collapsible {
+					position: relative;
+					max-height: 220px;
+					overflow: hidden;
+					transition: max-height 0.4s ease;
+				}
+				.benefits-collapsible.expanded {
+					max-height: 1000px;
+				}
+				.benefits-fade-overlay {
+					position: absolute;
+					bottom: 0; left: 0; right: 0;
+					height: 80px;
+					background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff 90%);
+					pointer-events: none;
+					transition: opacity 0.3s ease;
+				}
+				.benefits-collapsible.expanded .benefits-fade-overlay {
+					opacity: 0;
+				}
+				.benefits-toggle-btn {
+					display: none; /* ascuns pe desktop */
+					width: 100%;
+					background: none;
+					border: none;
+					color: #047857;
+					font-weight: 800;
+					font-size: 0.9rem;
+					cursor: pointer;
+					padding: 10px 0 4px 0;
+					text-align: center;
+					letter-spacing: 0.01em;
+				}
+				@media (max-width: 991px) {
+					.benefits-collapsible { max-height: 220px; } /* activ doar pe mobil */
+					.benefits-toggle-btn  { display: block; }
+				}
+				/* ── PF/PJ radio buttons stacked pe mobil ── */
+				.billing-type-options { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
+				@media (max-width: 640px) {
+					.billing-type-options { flex-direction: column; align-items: flex-start; gap: 12px; }
+				}
+				/* ── Grid 2 coloane facturare → 1 coloana pe mobil ── */
+				.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+				@media (max-width: 640px) {
+					.form-grid-2 { grid-template-columns: 1fr; }
+				}
+				/* ── Submit box responsive ── */
+				.submit-price-row {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					gap: 14px;
+					flexe-wrap: wrap;
+				}
+				@media (max-width: 640px) {
+					.submit-price-row {
+						flex-direction: column;
+						align-items: stretch;
+					}
+					.submit-price-row .submit-btn-wrap { width: 100%; }
+					.submit-price-row .submit-btn-wrap .btn,
+					.submit-price-row .submit-btn-wrap button { width: 100%; text-align: center; }
+				}
+			</style>
+			<div class="business-registration-grid">
 
 				<!-- COLOANA STANGA: FORMULAR INREGISTRARE -->
-				<div>
+				<div class="form-col">
 					<form method="post" enctype="multipart/form-data" class="card" style="padding: 28px; background: #ffffff; border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); display: flex; flex-direction: column; gap: 20px;">
 						<?php wp_nonce_field( 'submit_firma_action', 'firma_nonce' ); ?>
 
@@ -446,7 +524,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 								<label style="border: 2px solid #047857; padding: 12px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #f0fdf4;">
 									<div style="display: flex; align-items: center; gap: 10px;">
 										<input type="radio" name="payment_method" value="card" checked id="pay-card">
-										<strong style="color: #065f46; font-size: 0.95rem;">💳 Card Online (EuPlatesc.ro)</strong>
+										<strong style="color: #065f46; font-size: 0.95rem;">💳 Card Online</strong>
 									</div>
 									<span style="font-size: 0.75rem; background: #10b981; color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800;">INSTANT</span>
 								</label>
@@ -454,7 +532,7 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 								<label style="border: 2px solid #cbd5e1; padding: 12px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #f8fafc;">
 									<div style="display: flex; align-items: center; gap: 10px;">
 										<input type="radio" name="payment_method" value="op" id="pay-op">
-										<strong style="color: #1e293b; font-size: 0.95rem;">🏦 Ordin de Plată / Transfer Bancar (OP)</strong>
+										<strong style="color: #1e293b; font-size: 0.95rem;">🏦 Transfer Bancar (OP)</strong>
 									</div>
 									<span style="font-size: 0.75rem; background: #0284c7; color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800;">BT IBAN</span>
 								</label>
@@ -475,11 +553,11 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 								🧾 Date de Facturare Fiscală
 							</h3>
 
-							<div style="margin-bottom: 14px;">
-								<label style="font-weight: 800; font-size: 0.88rem; margin-right: 18px; cursor: pointer;">
+							<div class="billing-type-options" style="margin-bottom: 14px;">
+								<label style="font-weight: 800; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 7px;">
 									<input type="radio" name="billing_type" value="pj" checked id="bill-pj"> 🏢 Persoană Juridică (FIRMĂ / PFA)
 								</label>
-								<label style="font-weight: 800; font-size: 0.88rem; cursor: pointer;">
+								<label style="font-weight: 800; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 7px;">
 									<input type="radio" name="billing_type" value="pf" id="bill-pf"> 👤 Persoană Fizică
 								</label>
 							</div>
@@ -502,25 +580,25 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 								</div>
 							</div>
 
-							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+							<div class="form-grid-2">
 								<div>
-									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #475569;">Nume Persoană Contact / Facturare *</label>
-									<input type="text" name="lname" required value="<?php echo esc_attr( $current_user->last_name ); ?>" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #475569;">Nume *</label>
+									<input type="text" name="lname" required value="<?php echo esc_attr( $current_user->last_name ); ?>" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
 								</div>
 								<div>
 									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #475569;">Prenume *</label>
-									<input type="text" name="fname" required value="<?php echo esc_attr( $current_user->first_name ); ?>" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+									<input type="text" name="fname" required value="<?php echo esc_attr( $current_user->first_name ); ?>" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
 								</div>
 							</div>
 
-							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+							<div class="form-grid-2">
 								<div>
 									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #475569;">Email Factură *</label>
-									<input type="email" name="email" required value="<?php echo esc_attr( $current_user->user_email ); ?>" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+									<input type="email" name="email" required value="<?php echo esc_attr( $current_user->user_email ); ?>" style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
 								</div>
 								<div>
 									<label style="display: block; font-size: 0.75rem; font-weight: 800; color: #475569;">Telefon Factură *</label>
-									<input type="tel" name="phone" required style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
+									<input type="tel" name="phone" required style="width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;">
 								</div>
 							</div>
 
@@ -530,25 +608,25 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							</div>
 						</div>
 
-						<div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 8px; display: flex; flex-direction: column; gap: 12px;">
-							<div style="display: flex; justify-content: space-between; align-items: center;">
-								<div>
-									<strong style="color: #166534; font-size: 1.1rem;">Abonament Anual: 149 LEI / an</strong>
-									<div style="font-size: 0.78rem; color: #15803d;">Plată securizată ECOMPLEX.RO SRL</div>
-								</div>
+						<div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 8px;">
+							<!-- Preț abonament -->
+							<div style="margin-bottom: 12px;">
+								<strong style="color: #166534; font-size: 1.1rem; display: block;">Abonament Anual: 149 LEI / an</strong>
+								<div style="font-size: 0.78rem; color: #15803d; margin-top: 2px;">Plată securizată ECOMPLEX.RO SRL</div>
+							</div>
+							<!-- Buton submit sau prompt login -->
+							<div class="submit-btn-wrap">
 							<?php if ( $is_logged_in ) : ?>
-								<button type="submit" name="submit_firma" class="btn btn-primary" style="padding: 12px 20px; font-weight: 800; font-size: 0.95rem; border-radius: 8px;">
+								<button type="submit" name="submit_firma" class="btn btn-primary" style="width: 100%; padding: 13px 20px; font-weight: 800; font-size: 1rem; border-radius: 8px; text-align: center;">
 									🚀 Trimite & Continuă &rarr;
 								</button>
 							<?php else : ?>
-								<div style="flex: 1; text-align: right;">
-									<p style="font-size: 0.88rem; font-weight: 700; color: #065f46; margin: 0 0 8px 0;">
-										🔐 Conectează-te pentru a trimite formularul completat.
-									</p>
-									<a href="<?php echo esc_url( home_url( '/contul-meu/?redirect_to=' . urlencode( get_permalink() ) ) ); ?>" class="btn btn-primary" style="padding: 10px 20px; font-weight: 800; font-size: 0.9rem; display: inline-block;">
-										👤 Conectează-te / Creează Cont Gratuit &rarr;
-									</a>
-								</div>
+								<p style="font-size: 0.88rem; font-weight: 700; color: #065f46; margin: 0 0 10px 0;">
+									🔐 Conectează-te pentru a trimite formularul completat.
+								</p>
+								<a href="<?php echo esc_url( home_url( '/contul-meu/?redirect_to=' . urlencode( get_permalink() ) ) ); ?>" class="btn btn-primary" style="display: block; width: 100%; padding: 13px 20px; font-weight: 800; font-size: 0.95rem; border-radius: 8px; text-align: center; box-sizing: border-box;">
+									👤 Conectează-te / Creează Cont Gratuit &rarr;
+								</a>
 							<?php endif; ?>
 							</div>
 						</div>
@@ -556,9 +634,10 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 				</div>
 
 				<!-- COLOANA DREAPTA: CARD BENEFICII AFACERE PE HARTA -->
-				<div>
+				<div class="benefits-col">
 					<div class="card" style="padding: 24px; background: #ffffff; border: 2px solid #047857; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md); position: sticky; top: 90px;">
-						
+
+						<!-- Header preț — mereu vizibil -->
 						<div style="text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 20px;">
 							<span style="background: #d1fae5; color: #047857; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; padding: 4px 12px; border-radius: 20px;">
 								⭐ VIZIBILITATE LOCALĂ TOTALĂ
@@ -571,93 +650,120 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							</p>
 						</div>
 
-						<h4 style="font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: #0f172a; margin-bottom: 14px;">
-							Ce include pachetul de vizibilitate:
-						</h4>
+						<!-- Corp colapsabil (eMAG-style) — trunchiat pe mobil -->
+						<div class="benefits-collapsible" id="benefits-body">
+							<!-- overlay gradient fade -->
+							<div class="benefits-fade-overlay"></div>
 
-						<ul style="list-style: none; padding: 0; margin: 0 0 20px 0; display: flex; flex-direction: column; gap: 12px; font-size: 0.88rem;">
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
-								<div><strong>Pin Personalizat pe Harta Satelit</strong>: Poziționare exactă a afacerii cu iconiță și marcaj pe harta comunei Brezoaele.</div>
-							</li>
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
-								<div><strong>Profil Public Complet & Galerie Foto</strong>: Denumire firmă, Descriere, Telefoane, Galerie de până la 5 poze.</div>
-							</li>
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
-								<div><strong>Plată Flexibilă (Card, OP, Cash)</strong>: Plătești securizat cu cardul, transfer bancar BT sau numerar.</div>
-							</li>
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
-								<div><strong>Recomandare Prioritară către Cetățeni</strong>: Indexare în directorul local pentru locuitorii care caută meșteri sau servicii.</div>
-							</li>
-							<li style="display: flex; align-items: flex-start; gap: 10px;">
-								<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
-								<div><strong>Notificare de Reînnoire Automată</strong>: Te anunțăm prin email înainte de expirare pentru a păstra continuitatea.</div>
-							</li>
-						</ul>
+							<h4 style="font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: #0f172a; margin-bottom: 14px;">
+								Ce include pachetul de vizibilitate:
+							</h4>
 
-						<!-- INFORMARE FISCALA ECOMPLEX.RO SRL -->
-						<div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 8px; font-size: 0.78rem; color: #475569; line-height: 1.4;">
-							<strong>🧾 Informare Fiscală & Facturare:</strong><br/>
-							Facturarea este realizată de către <strong>ECOMPLEX.RO SRL</strong>, societate neplătitoare de TVA (facturare cu TVA 0%). Factura fiscală se poate introduce în contabilitate sub formă de cheltuială deductibilă (fără TVA deductibil).
+							<ul style="list-style: none; padding: 0; margin: 0 0 20px 0; display: flex; flex-direction: column; gap: 12px; font-size: 0.88rem;">
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
+									<div><strong>Pin Personalizat pe Harta Satelit</strong>: Poziționare exactă a afacerii cu iconiță și marcaj pe harta comunei Brezoaele.</div>
+								</li>
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
+									<div><strong>Profil Public Complet &amp; Galerie Foto</strong>: Denumire firmă, Descriere, Telefoane, Galerie de până la 5 poze.</div>
+								</li>
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
+									<div><strong>Plată Flexibilă (Card, OP, Cash)</strong>: Plătești securizat cu cardul, transfer bancar BT sau numerar.</div>
+								</li>
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
+									<div><strong>Recomandare Prioritară către Cetățeni</strong>: Indexare în directorul local pentru locuitorii care caută meșteri sau servicii.</div>
+								</li>
+								<li style="display: flex; align-items: flex-start; gap: 10px;">
+									<span style="color: #047857; font-weight: 900; font-size: 1.1rem; line-height: 1;">✅</span>
+									<div><strong>Notificare de Reînnoire Automată</strong>: Te anunțăm prin email înainte de expirare pentru a păstra continuitatea.</div>
+								</li>
+							</ul>
+
+							<!-- INFORMARE FISCALA -->
+							<div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 8px; font-size: 0.78rem; color: #475569; line-height: 1.4;">
+								<strong>🧾 Informare Fiscală &amp; Facturare:</strong><br/>
+								Facturarea este realizată de către <strong>ECOMPLEX.RO SRL</strong>, societate neplătitoare de TVA (TVA 0%). Factura fiscală se poate introduce în contabilitate sub formă de cheltuială deductibilă.
+							</div>
 						</div>
+						<!-- Buton Arată mai mult — apare doar pe mobil via CSS -->
+						<button class="benefits-toggle-btn" id="benefits-toggle-btn" type="button" aria-expanded="false">
+							▼ Arată toate beneficiile
+						</button>
+
 					</div>
 				</div>
 			</div>
 
-			<!-- JAVASCRIPT FOR LEAFLET PIN PICKER MAP & PAYMENT METHOD TOGGLE -->
+			<!-- JAVASCRIPT: LEAFLET LAYER SWITCHER + PIN + PF/PJ TOGGLE + BENEFITS COLLAPSE -->
 			<script>
 			document.addEventListener('DOMContentLoaded', function() {
-				// Initialize Leaflet Map centered directly on Brezoaele
 				var defaultLat = 44.561854;
 				var defaultLng = 25.770593;
-				
-				var map = L.map('pin-picker-map').setView([defaultLat, defaultLng], 14);
 
-				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				// ── Leaflet tile layers ──────────────────────────────────
+				var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					maxZoom: 19,
-					attribution: '© OpenStreetMap'
-				}).addTo(map);
+					attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>'
+				});
+				var topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+					maxZoom: 17,
+					attribution: '© OpenTopoMap'
+				});
+				var satLayer = L.tileLayer(
+					'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+					{ maxZoom: 19, attribution: '© Esri — Satelit' }
+				);
 
-				// Red Marker for Pin Picking
+				var map = L.map('pin-picker-map', {
+					center: [defaultLat, defaultLng],
+					zoom: 14,
+					layers: [osmLayer]
+				});
+
+				var baseLayers = {
+					'🛣️ Hărți Rutiere': osmLayer,
+					'🌿 Teren / Relief': topoLayer,
+					'🛰️ Satelit': satLayer
+				};
+				L.control.layers(baseLayers, {}, { position: 'topright', collapsed: false }).addTo(map);
+
+				// ── Draggable marker ────────────────────────────────────
 				var marker = L.marker([defaultLat, defaultLng], {
 					draggable: true,
 					title: 'Mută pinul pe locația afacerii'
 				}).addTo(map);
 
 				function updateCoords(lat, lng) {
-					document.getElementById('latitude').value = lat.toFixed(6);
+					document.getElementById('latitude').value  = lat.toFixed(6);
 					document.getElementById('longitude').value = lng.toFixed(6);
 				}
+				marker.on('dragend', function(e) { updateCoords(e.target.getLatLng().lat, e.target.getLatLng().lng); });
+				map.on('click', function(e) { marker.setLatLng(e.latlng); updateCoords(e.latlng.lat, e.latlng.lng); });
 
-				marker.on('dragend', function(e) {
-					var position = marker.getLatLng();
-					updateCoords(position.lat, position.lng);
-				});
-
-				map.on('click', function(e) {
-					marker.setLatLng(e.latlng);
-					updateCoords(e.latlng.lat, e.latlng.lng);
-				});
-
-				// Toggle PJ/PF fields
-				var billPf = document.getElementById('bill-pf');
-				var billPj = document.getElementById('bill-pj');
+				// ── PF/PJ toggle ────────────────────────────────────────
+				var billPf   = document.getElementById('bill-pf');
+				var billPj   = document.getElementById('bill-pj');
 				var pjFields = document.getElementById('pj-fields');
-
 				function updateBill() {
-					if (billPj.checked) {
-						pjFields.style.display = 'block';
-					} else {
-						pjFields.style.display = 'none';
-					}
+					if (pjFields) pjFields.style.display = billPj && billPj.checked ? 'block' : 'none';
 				}
-
 				if (billPf && billPj) {
 					billPf.addEventListener('change', updateBill);
 					billPj.addEventListener('change', updateBill);
+				}
+
+				// ── Benefits collapse (eMAG-style) ───────────────────────
+				var benefitsBody = document.getElementById('benefits-body');
+				var toggleBtn    = document.getElementById('benefits-toggle-btn');
+				if (toggleBtn && benefitsBody) {
+					toggleBtn.addEventListener('click', function() {
+						var expanded = benefitsBody.classList.toggle('expanded');
+						toggleBtn.setAttribute('aria-expanded', expanded);
+						toggleBtn.textContent = expanded ? '▲ Ascunde' : '▼ Arată toate beneficiile';
+					});
 				}
 			});
 			</script>
