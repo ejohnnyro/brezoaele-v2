@@ -183,7 +183,7 @@ function brezoaele_v2_scripts() {
 			wp_reset_postdata();
 		}
 
-		wp_enqueue_script( 'brezoaele-map', get_template_directory_uri() . '/js/map.js', array( 'leaflet-cluster-js' ), '1.0.4', true );
+		wp_enqueue_script( 'brezoaele-map', get_template_directory_uri() . '/js/map.js', array( 'leaflet-cluster-js' ), '1.0.5', true );
 		wp_localize_script( 'brezoaele-map', 'brezoaeleMapData', $pins );
 	}
 

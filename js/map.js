@@ -12,20 +12,44 @@ document.addEventListener("DOMContentLoaded", function() {
     const centerLat = 44.5714;
     const centerLon = 25.7936;
     
-    // Inițializare hartă Leaflet
-    const map = L.map('map').setView([centerLat, centerLon], 14);
-    
-    // Adăugăm harta din satelit (Esri World Imagery)
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    // ── Stratumuri de bază pentru Leaflet Layer Switcher ──
+    const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri and the GIS User Community'
-    }).addTo(map);
-    
-    // Adăugăm etichetele străzilor (CartoDB Light Labels)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+        attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>'
+    });
+
+    const topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 17,
+        attribution: '© OpenTopoMap'
+    });
+
+    const satTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 19,
-        attribution: '&copy; OpenStreetMap &copy; CARTO'
-    }).addTo(map);
+        attribution: '© Esri — Satelit'
+    });
+
+    const labelsLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap © CARTO'
+    });
+
+    const satGroup = L.layerGroup([satTileLayer, labelsLayer]);
+
+    const baseLayers = {
+        '🛰️ Satelit': satGroup,
+        '🛣️ Hărți Rutiere': osmLayer,
+        '🌿 Teren / Relief': topoLayer
+    };
+
+    // Inițializare hartă Leaflet cu Satelit implicit
+    const map = L.map('map', {
+        center: [centerLat, centerLon],
+        zoom: 14,
+        layers: [satGroup]
+    });
+
+    // Control comutare strat de hartă (dreapta sus)
+    L.control.layers(baseLayers, {}, { position: 'topright', collapsed: false }).addTo(map);
 
     // Preluăm pinii din obiectul localizat global
     const pinsData = window.brezoaeleMapData || [];
