@@ -217,3 +217,12 @@
 
 <!-- Global Content Wrapper (Boxed Layout) -->
 <div class="container site-main-container">
+
+<?php
+// Banner Publicitar Header Global (nu afișăm pe pagini utilitare, de cont, publicitate, sesizări sau rate cards)
+$is_excluded_ad_page = function_exists( 'brezoaele_is_ad_excluded_page' ) ? brezoaele_is_ad_excluded_page() : false;
+if ( function_exists( 'brezoaele_render_ad_placeholder' ) && ! $is_excluded_ad_page ) {
+	brezoaele_render_ad_placeholder( 'header', '728 x 90 px (Desktop) / 320 x 100 px (Mobil)', 'Banner Principal Header Site' );
+}
+?>
+

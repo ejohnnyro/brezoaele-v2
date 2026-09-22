@@ -127,12 +127,12 @@ if ( $ad_query->have_posts() ) {
 		</defs>
 	</svg>
 
-	<!-- Fundalul alb curbat de fundal care ocupă toată înălțimea și stânga ecranului -->
-	<div class="hero-curved-overlay-wrapper">
-		<div class="hero-curved-overlay"></div>
-	</div>
-
 	<div class="container hero-container-content">
+		<!-- Fundalul alb curbat de fundal în interiorul containerului hero -->
+		<div class="hero-curved-overlay-wrapper">
+			<div class="hero-curved-overlay"></div>
+		</div>
+
 		<!-- Conținutul text aliniat la grila paginii -->
 		<div class="hero-curved-content">
 			<span class="hero-church-badge">
@@ -181,19 +181,19 @@ if ( $ad_query->have_posts() ) {
 	<div class="container">
 		<div class="feature-grid">
 			
-			<!-- Card 1: Ghid Rezident -->
+			<!-- Card 1: Evenimente Locale -->
 			<div class="feature-card">
 				<div>
 					<div class="feature-card-header">
-						<span class="feature-card-icon" style="color: var(--color-primary);">📖</span>
-						<h3 class="feature-card-title">Ghid Rezident</h3>
+						<span class="feature-card-icon" style="color: var(--color-primary);">📅</span>
+						<h3 class="feature-card-title">Evenimente Locale</h3>
 					</div>
 					<p class="feature-card-text">
-						Utilități, taxe locale, colectare deșeuri și contacte administrative utile din comuna Brezoaele.
+						Calendarul sărbătorilor, târgurilor, competițiilor sportive și întâlnirilor comunitare din Brezoaele.
 					</p>
 				</div>
-				<a href="<?php echo esc_url( home_url( '/ghid-rezident/' ) ); ?>" class="feature-card-link">
-					DESCHIDE GHIDUL &rarr;
+				<a href="<?php echo esc_url( home_url( '/calendar-evenimente/' ) ); ?>" class="feature-card-link">
+					VEZI CALENDARUL &rarr;
 				</a>
 			</div>
 
@@ -460,7 +460,17 @@ if ( $ad_query->have_posts() ) {
 			</div>
 
 		</div>
+	</div>
+</section>
 
+<!-- Banner Publicitar Homepage Feed -->
+<section style="padding: 20px 0; background-color: var(--color-bg);">
+	<div class="container">
+		<?php
+		if ( function_exists( 'brezoaele_render_ad_placeholder' ) ) {
+			brezoaele_render_ad_placeholder( 'homepage-feed', '970 x 250 px (Billboard) / 728 x 90 px', 'Spațiu Publicitar Prima Pagină (Homepage Banner)' );
+		}
+		?>
 	</div>
 </section>
 
@@ -487,6 +497,8 @@ if ( $ad_query->have_posts() ) {
 		</div>
 
 	</div>
+</section>
+
 <!-- Newsletter Section -->
 <section style="padding: 40px 0; background-color: var(--color-bg);">
 	<div class="container">
@@ -500,4 +512,5 @@ if ( $ad_query->have_posts() ) {
 
 <?php
 get_footer();
+
 

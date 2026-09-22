@@ -28,36 +28,88 @@ document.addEventListener("DOMContentLoaded", function() {
     const menuToggle = document.querySelector(".menu-toggle");
     
     if (siteNavigation && menuToggle) {
-        menuToggle.addEventListener("click", function() {
+        menuToggle.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             siteNavigation.classList.toggle("toggled");
             const expanded = siteNavigation.classList.contains("toggled");
             menuToggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+
+            // Resetare sub-meniuri la închiderea meniului principal
+            if (!expanded) {
+                const openSubMenus = siteNavigation.querySelectorAll("ul.sub-menu.toggled-on");
+                openSubMenus.forEach(menu => menu.classList.remove("toggled-on"));
+                const openButtons = siteNavigation.querySelectorAll(".dropdown-toggle-btn.toggled-on");
+                openButtons.forEach(btn => {
+                    btn.classList.remove("toggled-on");
+                    btn.setAttribute("aria-expanded", "false");
+                });
+            }
         });
     }
 
-    // 3. Mobile Dropdown Submenus Accordion Toggle
+    // 3. Mobile Dropdown Submenus Accordion Toggle (Acordeon Curat Mobil)
     const parentLinks = siteNavigation ? siteNavigation.querySelectorAll(".menu-item-has-children > a") : [];
     parentLinks.forEach(link => {
-        // Creare buton de toggle sub-meniu
-        const dropdownToggle = document.createElement("button");
-        dropdownToggle.className = "dropdown-toggle-btn";
-        dropdownToggle.innerHTML = "▾";
-        dropdownToggle.setAttribute("aria-expanded", "false");
-        dropdownToggle.setAttribute("aria-label", "Deschide Sub-meniu");
-        
-        // Introducerea lui imediat după link-ul părinte
-        link.parentNode.insertBefore(dropdownToggle, link.nextSibling);
-        
-        dropdownToggle.addEventListener("click", function(e) {
+        const parentLi = link.parentNode;
+        if (!parentLi) return;
+
+        // Evită dublarea butonului dacă există deja
+        let dropdownToggle = parentLi.querySelector(":scope > .dropdown-toggle-btn");
+        if (!dropdownToggle) {
+            dropdownToggle = document.createElement("button");
+            dropdownToggle.type = "button";
+            dropdownToggle.className = "dropdown-toggle-btn";
+            dropdownToggle.innerHTML = "▾";
+            dropdownToggle.setAttribute("aria-expanded", "false");
+            dropdownToggle.setAttribute("aria-label", "Deschide Sub-meniu");
+            
+            // Inserare imediat după link-ul părinte
+            link.parentNode.insertBefore(dropdownToggle, link.nextSibling);
+        }
+
+        const handleToggle = function(e) {
             e.preventDefault();
-            const subMenu = link.parentNode.querySelector("ul.sub-menu");
-            if (subMenu) {
-                subMenu.classList.toggle("toggled-on");
-                dropdownToggle.classList.toggle("toggled-on");
-                const isExpanded = subMenu.classList.contains("toggled-on");
-                dropdownToggle.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+            e.stopPropagation();
+
+            const subMenu = parentLi.querySelector(":scope > ul.sub-menu");
+            if (!subMenu) return;
+
+            const isAlreadyOpen = subMenu.classList.contains("toggled-on");
+
+            // Închidem TOATE celelalte sub-meniuri deschise (comportament de acordeon curat)
+            const allOpenSubMenus = siteNavigation.querySelectorAll("ul.sub-menu.toggled-on");
+            allOpenSubMenus.forEach(openMenu => {
+                if (openMenu !== subMenu) {
+                    openMenu.classList.remove("toggled-on");
+                }
+            });
+
+            const allOpenButtons = siteNavigation.querySelectorAll(".dropdown-toggle-btn.toggled-on");
+            allOpenButtons.forEach(openBtn => {
+                if (openBtn !== dropdownToggle) {
+                    openBtn.classList.remove("toggled-on");
+                    openBtn.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            // Comutăm starea sub-meniului curent
+            if (isAlreadyOpen) {
+                subMenu.classList.remove("toggled-on");
+                dropdownToggle.classList.remove("toggled-on");
+                dropdownToggle.setAttribute("aria-expanded", "false");
+                dropdownToggle.blur();
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+            } else {
+                subMenu.classList.add("toggled-on");
+                dropdownToggle.classList.add("toggled-on");
+                dropdownToggle.setAttribute("aria-expanded", "true");
             }
-        });
+        };
+
+        dropdownToggle.addEventListener("click", handleToggle);
     });
 
     // 4. Fullscreen Search Overlay Toggle

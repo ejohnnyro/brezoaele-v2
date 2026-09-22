@@ -227,8 +227,8 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 				if ( 'op' === $payment_method ) {
 					$body .= "INSTRUCȚIUNI PLATĂ PRIN TRANSFER BANCAR (OP):\n"
 						  . "Beneficiar: ECOMPLEX.RO SRL\n"
-						  . "Bancă: Banca Transilvania\n"
-						  . "IBAN: RO70BTRLRONCRT0CK9121401\n"
+						  . "Bancă: ING Bank\n"
+						  . "IBAN: RO72INGB0000999920527822\n"
 						  . "Detalii plată / Referință: $order_id\n\n"
 						  . "După efectuarea transferului bancar, afacerea ta va fi activată pe hartă pe o perioadă de 365 de zile.\n\n";
 				} else {
@@ -287,11 +287,11 @@ if ( $is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['su
 							</tr>
 							<tr style="border-bottom: 1px solid #dcfce7;">
 								<td style="padding: 8px 0; color: #15803d; font-weight: 700;">Banca:</td>
-								<td style="padding: 8px 0; font-weight: 800; color: #0f172a;">Banca Transilvania</td>
+								<td style="padding: 8px 0; font-weight: 800; color: #0f172a;">ING Bank</td>
 							</tr>
 							<tr style="border-bottom: 1px solid #dcfce7;">
 								<td style="padding: 8px 0; color: #15803d; font-weight: 700;">Cont IBAN:</td>
-								<td style="padding: 8px 0; font-weight: 900; color: #047857; font-family: monospace; font-size: 1.05rem;">RO70BTRLRONCRT0CK9121401</td>
+								<td style="padding: 8px 0; font-weight: 900; color: #047857; font-family: monospace; font-size: 1.05rem;">RO72INGB0000999920527822</td>
 							</tr>
 							<tr>
 								<td style="padding: 8px 0; color: #15803d; font-weight: 700;">Detalii plată (Referință):</td>

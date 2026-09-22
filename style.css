@@ -349,10 +349,12 @@ h3 {
     content: "";
 }
 
-/* Afișare sub-meniu la hover */
-.main-navigation li:hover>ul.sub-menu,
-.main-navigation li:focus-within>ul.sub-menu {
-    display: block;
+/* Afișare sub-meniu la hover / focus-within doar pe desktop */
+@media (min-width: 769px) {
+    .main-navigation li:hover>ul.sub-menu,
+    .main-navigation li:focus-within>ul.sub-menu {
+        display: block;
+    }
 }
 
 /* Ascundere butoane de control meniu mobil pe desktop */
@@ -556,7 +558,7 @@ h3 {
     }
 
     .main-navigation ul.sub-menu.toggled-on {
-        display: block;
+        display: block !important;
     }
 
     .main-navigation ul.sub-menu li {
@@ -583,14 +585,16 @@ h3 {
         border: 1px solid var(--color-border);
         border-radius: var(--border-radius-md);
         color: var(--color-text-dark);
-        width: 32px;
-        height: 32px;
-        font-size: 0.9rem;
+        width: 34px;
+        height: 34px;
+        font-size: 0.95rem;
         cursor: pointer;
         align-items: center;
         justify-content: center;
-        transition: var(--transition-normal);
+        transition: transform 0.2s ease, background-color 0.2s ease;
         z-index: 10;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .dropdown-toggle-btn.toggled-on {
@@ -861,7 +865,7 @@ h3 {
 
 /* Flat Hero Layout Redesign */
 .flat-hero-container {
-    position: static;
+    position: relative;
     background-size: auto;
     background-position: right center;
     /* Aliniază imaginea în dreapta pentru ca biserica să rămână vizibilă */
@@ -871,6 +875,7 @@ h3 {
     align-items: stretch;
     width: 100%;
     overflow: hidden;
+    z-index: 1;
 }
 
 .hero-curved-overlay-wrapper {
@@ -906,6 +911,8 @@ h3 {
 }
 
 .hero-curved-content {
+    position: relative;
+    z-index: 5;
     width: 50%;
     max-width: 540px;
     /* Lățime optimă pentru a nu depăși fundalul alb */
@@ -1841,4 +1848,293 @@ input:checked+.cookie-switch-label::before {
 /* Pagination Spacing Fix */
 .pagination .page-numbers {
     margin: 2px !important;
+}
+
+/* ==========================================================================
+   11. Publicitate & Ad Banners System
+   ========================================================================== */
+.brz-ad-wrapper {
+    width: 100%;
+    margin: 20px 0;
+    box-sizing: border-box;
+}
+
+.brz-ad-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 2px dashed #cbd5e1;
+    border-radius: var(--border-radius-lg);
+    padding: 22px 16px;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    color: var(--color-text-dark);
+}
+
+.brz-ad-card:hover {
+    border-color: var(--color-primary);
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.brz-ad-badge {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    color: var(--color-primary-dark);
+    background: #ffffff;
+    border: 1px solid var(--color-primary-light);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.brz-ad-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--color-text-dark);
+    margin-bottom: 4px;
+}
+
+.brz-ad-dims {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+.brz-ad-button {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #ffffff;
+    background-color: var(--color-primary);
+    padding: 8px 16px;
+    border-radius: var(--border-radius-md);
+    display: inline-block;
+    transition: background-color 0.2s ease;
+}
+
+.brz-ad-card:hover .brz-ad-button {
+    background-color: var(--color-primary-dark);
+}
+
+/* Specific Format Constraints */
+.brz-ad-format-header {
+    max-width: 1280px;
+    margin: 16px auto;
+}
+
+.brz-ad-format-header .brz-ad-card {
+    min-height: 80px;
+    padding: 14px 20px;
+}
+
+.brz-ad-format-sidebar-medium .brz-ad-card {
+    min-height: 250px;
+}
+
+.brz-ad-format-sidebar-sticky .brz-ad-card {
+    min-height: 360px;
+}
+
+.brz-ad-format-in-article {
+    margin: 28px 0;
+}
+
+.brz-ad-format-in-article .brz-ad-card {
+    min-height: 110px;
+}
+
+/* Grid Layout pe Desktop pentru single.php */
+.brz-single-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.brz-single-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.brz-single-sidebar-card {
+    background: #ffffff;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+    padding: 20px;
+}
+
+.brz-single-sidebar-card.sticky-ad {
+    position: sticky;
+    top: 20px;
+}
+
+@media (max-width: 900px) {
+    .brz-single-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .brz-single-sidebar {
+        width: 100%;
+    }
+
+    .brz-single-sidebar-card.sticky-ad {
+        position: static;
+    }
+}
+
+/* ==========================================================================
+   12. Global Lightbox System
+   ========================================================================== */
+.entry-content img,
+.post-thumbnail img,
+.wp-block-image img,
+.wp-block-gallery img,
+.gallery img,
+.card img:not(.icon):not(.logo):not(.avatar),
+.brz-lightbox-target {
+	cursor: zoom-in;
+}
+
+.brz-lightbox-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(15, 23, 42, 0.92);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	z-index: 999999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.25s ease;
+}
+
+.brz-lightbox-overlay.active {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.brz-lightbox-content {
+	position: relative;
+	max-width: 90vw;
+	max-height: 85vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	transform: scale(0.92);
+	transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brz-lightbox-overlay.active .brz-lightbox-content {
+	transform: scale(1);
+}
+
+.brz-lightbox-img {
+	max-width: 100%;
+	max-height: 80vh;
+	border-radius: 12px;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+	object-fit: contain;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.brz-lightbox-caption {
+	margin-top: 14px;
+	color: #e2e8f0;
+	font-size: 0.98rem;
+	font-weight: 700;
+	text-align: center;
+	background: rgba(15, 23, 42, 0.75);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	padding: 8px 20px;
+	border-radius: 20px;
+	max-width: 85%;
+	backdrop-filter: blur(6px);
+}
+
+.brz-lightbox-close {
+	position: absolute;
+	top: 20px;
+	right: 24px;
+	background: rgba(255, 255, 255, 0.15);
+	color: #ffffff;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	font-size: 1.5rem;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
+	z-index: 1000000;
+}
+
+.brz-lightbox-close:hover {
+	background: rgba(239, 68, 68, 0.85);
+	border-color: #ef4444;
+	transform: scale(1.1);
+}
+
+.brz-lightbox-nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: rgba(255, 255, 255, 0.15);
+	color: #ffffff;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	font-size: 1.8rem;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
+	z-index: 1000000;
+	user-select: none;
+}
+
+.brz-lightbox-nav:hover {
+	background: rgba(4, 120, 87, 0.85);
+	border-color: #34d399;
+	transform: translateY(-50%) scale(1.1);
+}
+
+.brz-lightbox-prev {
+	left: 24px;
+}
+
+.brz-lightbox-next {
+	right: 24px;
+}
+
+@media (max-width: 768px) {
+	.brz-lightbox-nav {
+		width: 40px;
+		height: 40px;
+		font-size: 1.4rem;
+	}
+	.brz-lightbox-prev { left: 10px; }
+	.brz-lightbox-next { right: 10px; }
 }

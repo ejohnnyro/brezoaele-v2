@@ -64,7 +64,7 @@ brezoaele.ro/
 - Galerie foto: Logo/Imagine Reprezentativă + până la **5 fotografii suplimentare de galerie**.
 - **3 Metode de Plată** (149 LEI / an):
   - 💳 **Card Online** via EuPlatesc.ro (activare instant).
-  - 🏦 **Ordin de Plată (OP)** — IBAN: `RO70BTRLRONCRT0CK9121401` (Banca Transilvania, ECOMPLEX.RO SRL).
+  - 🏦 **Ordin de Plată (OP)** — IBAN: `RO72INGB0000999920527822` (ING Bank, ECOMPLEX.RO SRL).
   - 💵 **Cash / Numerar** — instrucțiuni afișate pe ecran + email de confirmare.
 - **Card beneficii** vizibil în coloana dreapta pe desktop.
 
